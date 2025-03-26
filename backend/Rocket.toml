@@ -1,0 +1,6 @@
+[default]
+keep_alive = 5
+log_level = "debug"
+
+[default.databases.mysql_logs]
+url = "mysql://b6610545537:sirapob.ph%40ku.th@iot.cpe.ku.ac.th/b6610545537"
