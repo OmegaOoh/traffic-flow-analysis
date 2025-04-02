@@ -1,3 +1,6 @@
+/*
+    This module used to be demo for SQL database connection
+*/
 use rocket::serde::{Deserialize, Serialize};
 use rocket_okapi::openapi;
 use rocket_okapi::okapi::schemars;

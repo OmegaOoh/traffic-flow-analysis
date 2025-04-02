@@ -3,6 +3,7 @@ extern crate rocket;
 
 mod api;
 mod service;
+mod utils;
 
 use dotenv::dotenv;
 use rocket_okapi::openapi_get_routes;
@@ -23,6 +24,7 @@ fn rocket() -> _ {
         .mount("/api/v1", openapi_get_routes![
             api::hello::hello_world,
             api::weather_data::get_all_weather_docs,
+            api::flow::get_flow,
         ])
         .mount(
             "/api/v1/ui/",
