@@ -13,4 +13,6 @@ target/
 .env
 
 # rocket toml
-Rocket.toml
+backend/Rocket.toml
+
+node_modules/
