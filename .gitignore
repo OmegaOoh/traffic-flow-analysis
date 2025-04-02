@@ -12,3 +12,5 @@ target/
 # environment file
 .env
 
+# rocket toml
+Rocket.toml
