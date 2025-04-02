@@ -1,6 +1,6 @@
 <template>
 <div class="p-4">
-  <h1 class="text-xl font-bold text-center mb-10"> Play around with our data! </h1>
+  <h1 class="text-xl font-bold text-center mb-10"> Play around with our APIs! </h1>
   
   <h2 class="text-lg font-bold text-center mb-4">Predict number of vehicles (in 50x30 meters space)</h2>
   <div class="grid grid-cols-2 gap-4">
@@ -70,8 +70,8 @@ function timeToRFC3339(timeString: string) {
     now.setHours(hours);
     now.setMinutes(minutes);
   } else {
-    if (now.getMinutes() < 30) {
-      now.setMinutes(0);
+    if (60-now.getMinutes() < now.getMinutes()) {
+      now.setMinutes(30);
     } else {
       now.setHours(now.getHours() + 1);
       now.setMinutes(0);
