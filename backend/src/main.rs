@@ -25,6 +25,8 @@ fn rocket() -> _ {
             api::hello::hello_world,
             api::weather_data::get_all_weather_docs,
             api::flow::get_flow,
+            api::density::get_density,
+            api::count::get_count,
         ])
         .mount(
             "/api/v1/ui/",
