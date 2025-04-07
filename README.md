@@ -2,13 +2,13 @@
 Simple API web server to provide data about traffic flow
 
 ## how to run
-1. Edit `utl` in `rocket.toml` file to be your __mysql__ database url
+1. Edit `url` in `rocket.toml` file to be your __mysql__ database url
 2. compile and run the server with 
   ```sh
     cargo run
   ```
   
-## MYSQL database Table (required)
+## MYSQL database Table (required, planned to remove)
 1. weatherData
 
 | # | Name        | Type         | Collation            | Attributes | Null | Default           | Comments | Extra             |
