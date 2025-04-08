@@ -2,8 +2,9 @@
 Simple API web server to provide data about traffic flow
 
 ## how to run
-1. Edit `utl` in `rocket.toml` file to be your __mysql__ database url
-2. compile and run the server with 
+1. Edit `url` in `rocket.toml` file to be your **mysql** database url
+2. Install and Add PATH to [LibTorch](https://pytorch.org/get-started/locally/) (Setup guide can be found [here](https://rustrepo.com/repo/LaurentMazare-tch-rs-rust-machine-learning)) **or** follow [this if you have Pytorch installed](https://necrashter.github.io/tch-rs-install-from-pytorch)
+3. compile and run the server with 
   ```sh
     cargo run
   ```

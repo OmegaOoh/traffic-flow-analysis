@@ -11,12 +11,17 @@ use rocket_okapi::swagger_ui::{make_swagger_ui, SwaggerUIConfig};
 use service::database_connection::Logs;
 use service::predictor;
 use rocket_db_pools::Database;
+use std::env;
+
+fn initialize_predictor() {
+    let _ = &service::predictor::VEHICLE_COUNT_MODEL;
+}
 
 #[launch]
 fn rocket() -> _ {
     dotenv().ok(); // Load environment variable from .env file
     
-    predictor::init();
+    initialize_predictor();
     
     rocket::build()
         .attach(Logs::init())
@@ -26,7 +31,6 @@ fn rocket() -> _ {
         .mount("/api/v1", openapi_get_routes![
             // Test/ Study API (Subject to remove)
             api::hello::hello_world,
-            api::singleton_test::singleton,
             // Production API
             api::weather_data::get_all_weather_docs,
             api::flow::get_flow,
