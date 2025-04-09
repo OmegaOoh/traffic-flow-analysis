@@ -4,7 +4,9 @@ Simple API web server to provide data about traffic flow
 ## how to run
 1. Copy 'sample-Rocket.toml' to 'Rocket.toml'
 2. Edit `url` in `Rocket.toml` file to be your __mysql__ database url
-3. compile and run the server with 
+3. Copy 'sample.env' to '.env'
+4. Edit `ALLOWED_ORIGINS` in `.env` file to be your __frontend__ url
+5. compile and run the server with 
   ```sh
     cargo run
   ```
