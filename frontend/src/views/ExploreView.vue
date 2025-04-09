@@ -1,13 +1,37 @@
 <script setup lang="ts">
-import ExploresCount from '@/components/ExploresCount.vue';
+import RExploresCard from '@/components/ExploresCard-R.vue';
+import LExploresCard from '@/components/ExploresCard-L.vue';
 
 </script>
 
 <template>
 <div class="p-4">
-  <h1 class="text-xl font-bold text-center mb-10"> Play around with our APIs! </h1>
+  <h1 class="text-5xl font-bold text-center mb-10"> Play around with our APIs! </h1>
   
-  <h2 class="text-lg font-bold text-center mb-4">Predict number of vehicles</h2>
-  <ExploresCount/>
+  <div class='mb-20'>
+    <RExploresCard 
+        title="Predict Number of Vehicles" 
+        prediction-card="Vehicle Count" 
+        api-path="/api/v1/count"
+        api-return="count"
+        :use-vehicle-type='true'
+    />
+  </div>
+  <div class='my-20'>
+    <LExploresCard 
+      title="Predict Density of Vehicles" 
+      prediction-card="Vehicle Density" 
+      api-path="/api/v1/density"
+      api-return="density"
+    />
+  </div>  
+  <div class='my-20'>
+    <RExploresCard 
+      title="Predict Flow" 
+      prediction-card="Flow" 
+      api-path="/api/v1/flow"
+      api-return="flow"
+    />
+  </div>
 </div>
 </template>
