@@ -11,7 +11,7 @@ use std::env;
 
 use rocket::http::Method;
 use rocket_cors::{
-    AllowedHeaders, AllowedOrigins, Error,
+    AllowedHeaders, AllowedOrigins,
     Cors, CorsOptions 
 };
 use rocket_okapi::openapi_get_routes;
