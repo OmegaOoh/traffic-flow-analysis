@@ -1,9 +1,11 @@
 <script setup lang="ts"> 
 import apiClient from '@/axios'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, defineAsyncComponent } from 'vue'
 import { generateColors} from '@/lib/color_generation';
-import { Pie } from 'vue-chartjs'
+//import { Pie } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js'
+
+const Pie = defineAsyncComponent(() => import('vue-chartjs').then(module => module.Pie));
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement)
 
@@ -15,7 +17,7 @@ const weathersData = ref({
   } ]
 })
 const weathersChartOptions = ref({
-  responsive: false,
+  responsive: true,
   maintainAspectRatio: true,
   plugins: {
     title: {
@@ -29,7 +31,7 @@ const weathersChartOptions = ref({
     },
     legend: {
       labels: {
-        color: "white",        
+        color: "white",
       }
     }
   }

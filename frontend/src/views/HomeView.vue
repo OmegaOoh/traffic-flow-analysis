@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import WeatherPie from "@/components/WeatherPieChart.vue"
+import TrafficLine from "@/components/TrafficFlowSpeedChart.vue"
+import VehicleLine from "@/components/VehicleCountChart.vue"
 </script>
 
 <template>
@@ -8,11 +10,29 @@ import WeatherPie from "@/components/WeatherPieChart.vue"
       <h1 class="text-4xl font-bold mb-4">Welcome to Traffic Flow Analysis</h1>
       <p class="text-center">Explore the traffic flow data</p>
     </div>
-    <div class="grid grid-cols-2">
-      <div class="card bg-neutral m-8 h-fit"> 
+    <div class="md:grid md:grid-cols-2 gap-4 max-w-screen mx-20">
+      <div class="m-auto">
+        <h2 class="text-5xl font-bold text-center top-0 bottom-0 mb-5">Our Data</h2>
+        <ul class="text-2xl list-disc mx-10">
+          <li> Weather Description </li>
+          <li> Number of Vehicle Each Type </li>
+          <li> Traffic Flow Speed </li>
+        </ul>
+      </div>
+      <div class="card bg-neutral m-8 w-auto"> 
         <div class="card-body">
           <WeatherPie />
         </div>
+      </div>
+    </div>
+    <div class="card bg-neutral m-8 w-auto"> 
+      <div class="card-body">
+        <TrafficLine />
+      </div>
+    </div>
+    <div class="card bg-neutral m-8 w-auto"> 
+      <div class="card-body">
+        <VehicleLine />
       </div>
     </div>
   </main>
