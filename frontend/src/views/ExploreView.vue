@@ -12,7 +12,7 @@ import LExploresCard from '@/components/ExploresCard-L.vue';
     <RExploresCard 
         title="Predict Number of Vehicles" 
         prediction-card="Vehicle Count" 
-        api-path="/api/v1/count"
+        api-path="/count"
         api-return="count"
         :use-vehicle-type='true'
     />
@@ -21,7 +21,7 @@ import LExploresCard from '@/components/ExploresCard-L.vue';
     <LExploresCard 
       title="Predict Density of Vehicles" 
       prediction-card="Vehicle Density" 
-      api-path="/api/v1/density"
+      api-path="/density"
       api-return="density"
     />
   </div>  
@@ -29,7 +29,7 @@ import LExploresCard from '@/components/ExploresCard-L.vue';
     <RExploresCard 
       title="Predict Flow" 
       prediction-card="Flow" 
-      api-path="/api/v1/flow"
+      api-path="/flow"
       api-return="flow"
     />
   </div>
