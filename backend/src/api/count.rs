@@ -29,7 +29,7 @@ struct CountQuery {
 }
 
 
-#[openapi(tag = "Flow Analysis")]
+#[openapi(tag = "Predictive")]
 #[post("/count?<query..>", format = "json", data="<count_request>")]
 pub fn get_count(count_request: Json<CountRequestBody>, query: CountQuery ) -> Json<Count> {
     let request_data = count_request.0;

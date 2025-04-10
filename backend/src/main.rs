@@ -42,10 +42,14 @@ fn rocket() -> _ {
         .attach(Logs::init())
         .mount("/api/v1", routes![
             api::weather_data::get_all_weather,
+            api::vehicle_data::get_all_vehicle,
+            api::flow_data::get_all_flow,
         ])
         .mount("/api/v1", openapi_get_routes![
             api::hello::hello_world,
             api::weather_data::get_all_weather_docs,
+            api::vehicle_data::get_all_vehicle_docs,
+            api::flow_data::get_all_flow_docs,
             api::flow::get_flow,
             api::density::get_density,
             api::count::get_count,
