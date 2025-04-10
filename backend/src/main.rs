@@ -19,10 +19,10 @@ use rocket_okapi::swagger_ui::{make_swagger_ui, SwaggerUIConfig};
 use service::database_connection::Logs;
 use rocket_db_pools::Database;
 
-fn make_cors() -> Cors {     
-    let allowed_origins= AllowedOrigins::some_exact(&[
-        env::var("ALLOWED_ORIGINS").unwrap_or("http://localhost:5173".to_string())
-    ]);
+fn make_cors() -> Cors {    
+   let origins_str :String  =  env::var("ALLOWED_ORIGINS").unwrap_or("http://localhost:8000".to_string());
+   let origins = origins_str.as_str().split(",").collect::<Vec<&str>>();
+    let allowed_origins= AllowedOrigins::some_exact(&origins);
     
     CorsOptions {
         allowed_origins,
@@ -39,7 +39,7 @@ fn rocket() -> _ {
     
     
     rocket::build()
-        .attach(Logs::init())
+        .attach(Logs::init()).attach(make_cors())
         .mount("/api/v1", routes![
             api::weather_data::get_all_weather,
             api::vehicle_data::get_all_vehicle,
@@ -53,6 +53,7 @@ fn rocket() -> _ {
             api::flow::get_flow,
             api::density::get_density,
             api::count::get_count,
+            api::count::get_count_all,
         ])
         .mount(
             "/api/v1/ui/",
@@ -61,5 +62,4 @@ fn rocket() -> _ {
                 ..Default::default()
             }),
         )
-        .attach(make_cors())
 }
