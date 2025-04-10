@@ -28,7 +28,7 @@ pub fn get_all_flow_docs() -> rocket::serde::json::Json<Vec<FlowDesc>> {
 pub async fn get_all_flow(
     db: &Logs) -> rocket::serde::json::Json<Vec<FlowDesc>>
 {   
-    let mut  sql = String::from (
+    let sql = String::from (
         "SELECT
             CASE
                 WHEN MINUTE(time) < 15 THEN

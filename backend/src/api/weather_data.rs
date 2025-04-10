@@ -26,7 +26,7 @@ pub fn get_all_weather_docs() -> serde::json::Json<Vec<WeatherDesc>> {
 pub async fn get_all_weather(
     db: &Logs) -> serde::json::Json<Vec<WeatherDesc>>
 {   
-    let mut  sql = String::from (
+    let sql = String::from (
         "SELECT
             CASE
                 WHEN WeatherDesc IN ('clear sky', 'few clouds', 'scattered clouds') THEN 'Clear'

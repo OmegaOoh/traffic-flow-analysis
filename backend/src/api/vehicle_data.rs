@@ -30,7 +30,7 @@ pub fn get_all_vehicle_docs() -> rocket::serde::json::Json<Vec<VehicleDesc>> {
 pub async fn get_all_vehicle(
     db: &Logs) -> rocket::serde::json::Json<Vec<VehicleDesc>>
 {   
-    let mut  sql = String::from (
+    let sql = String::from (
         "SELECT
             CASE
                 WHEN MINUTE(time) < 15 THEN

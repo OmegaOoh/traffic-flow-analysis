@@ -1,5 +1,4 @@
 use rocket::serde::{json::Json, Deserialize, Serialize};
-use rocket_db_pools::sqlx::query;
 use rocket_okapi::openapi;
 use schemars::JsonSchema;
 use chrono::{DateTime, FixedOffset, Utc};
