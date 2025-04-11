@@ -1,16 +1,14 @@
 <script setup lang="ts"> 
 import apiClient from '@/axios'
-import { onMounted, ref, defineAsyncComponent } from 'vue'
+import { onMounted, ref } from 'vue'
 import { generateColors} from '@/lib/color_generation';
-//import { Pie } from 'vue-chartjs'
+import { Pie } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js'
-
-const Pie = defineAsyncComponent(() => import('vue-chartjs').then(module => module.Pie));
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement)
 
 const weathersData = ref({
-  labels: ["Dummy"],
+  labels: ["Loading..."],
   datasets: [ { 
     label: 'Weathers',
     data: [1],
@@ -19,6 +17,7 @@ const weathersData = ref({
 const weathersChartOptions = ref({
   responsive: true,
   maintainAspectRatio: true,
+  animation: false,
   plugins: {
     title: {
       display: true,
@@ -52,7 +51,7 @@ async function getWeathersData() {
       lab.push(d.weather);
       count.push(d.count);
     }
-    weathersData.value = { // Assign a new object to weathersData.value
+    weathersData.value = {
       labels: lab,
       datasets: [
         {

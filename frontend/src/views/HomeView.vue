@@ -10,7 +10,7 @@ import VehicleLine from "@/components/VehicleCountChart.vue"
       <h1 class="text-4xl font-bold mb-4">Welcome to Traffic Flow Analysis</h1>
       <p class="text-center">Explore the traffic flow data</p>
     </div>
-    <div class="md:grid md:grid-cols-2 gap-4 max-w-screen mx-20">
+    <div class="md:grid md:grid-cols-2 gap-4">
       <div class="m-auto">
         <h2 class="text-5xl font-bold text-center top-0 bottom-0 mb-5">Our Data</h2>
         <ul class="text-2xl list-disc mx-10">
@@ -19,19 +19,19 @@ import VehicleLine from "@/components/VehicleCountChart.vue"
           <li> Traffic Flow Speed </li>
         </ul>
       </div>
-      <div class="card bg-neutral m-8 w-auto"> 
-        <div class="card-body">
+      <div class="card bg-neutral m-8 w-auto md:h-[50vh] md:justify-end"> 
+        <div class="card-body items-center size-full">
           <WeatherPie />
         </div>
       </div>
     </div>
-    <div class="card bg-neutral m-8 w-auto"> 
-      <div class="card-body">
+    <div class="card bg-neutral m-8 h-[75vh]"> 
+      <div class="card-body size-full">
         <TrafficLine />
       </div>
     </div>
-    <div class="card bg-neutral m-8 w-auto"> 
-      <div class="card-body">
+    <div class="card bg-neutral m-8 h-[75vh]"> 
+      <div class="card-body size-full">
         <VehicleLine />
       </div>
     </div>

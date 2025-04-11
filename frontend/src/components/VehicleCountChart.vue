@@ -1,27 +1,25 @@
 <script setup lang="ts">
 import apiClient from '@/axios'
-import { onMounted, ref, defineAsyncComponent } from 'vue'
+import { onMounted, ref } from 'vue'
 import { generateColors} from '@/lib/color_generation';
-//import { Line } from 'vue-chartjs'
+import { Line } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale } from 'chart.js' // Import CategoryScale and LinearScale
 
-ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale) // Register CategoryScale and LinearScale
-
-const Line = defineAsyncComponent(() => import('vue-chartjs').then(module => module.Line));
+ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale)
 
 const trafficFlowData = ref({
   labels: ["Loading..."],
   datasets: [ {
     label: 'Count',
     data: [],
-    borderColor: '', // Will be set dynamically
+    borderColor: '',
     borderWidth: 2,
-    fill: false, // Set to true if you want to fill the area under the line
+    fill: false,
   } ]
 })
 const trafficChartOptions = ref({
   responsive: true,
-  maintainAspectRatio: true,
+  maintainAspectRatio: false,
   scales: {
     x: { grid: { color: 'rgba(255,255,255,0.25)' } },
     y: { grid: { color: 'rgba(255,255,255,0.25)' } }
@@ -95,7 +93,7 @@ async function getFlowData() {
     };
 
   } catch (error) {
-    console.error('Error fetching vehicle data:', error) // Corrected error message
+    console.error('Error fetching vehicle data:', error)
     trafficFlowData.value.labels = ["Error loading data"];
     trafficFlowData.value.datasets[0].data = [];
   }
