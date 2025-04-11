@@ -12,15 +12,17 @@ export function timeToRFC3339(timeString: string) {
   const now = new Date()
   if (timeString && timeString.trim() != '') {
     const [hours, minutes] = timeString.split(':').map(Number)
+    if (hours < 0 || minutes < 0 || hours > 23 || minutes > 59) {
+      throw Error('Invalid time, Time should be in range of 00:00 and 23:59')
+    }
     now.setHours(hours)
     now.setMinutes(minutes)
+  }
+  if (60 - now.getMinutes() < now.getMinutes()) {
+    now.setHours(now.getHours() + 1)
+    now.setMinutes(0)
   } else {
-    if (60 - now.getMinutes() < now.getMinutes()) {
-      now.setHours(now.getHours() + 1)
-      now.setMinutes(0)
-    } else {
-      now.setMinutes(30)
-    }
+    now.setMinutes(30)
   }
   now.setSeconds(0)
   now.setMilliseconds(0)
