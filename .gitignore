@@ -12,7 +12,4 @@ target/
 # environment file
 .env
 
-# rocket toml
-backend/Rocket.toml
-
 node_modules/
