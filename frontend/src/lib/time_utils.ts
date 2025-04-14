@@ -18,11 +18,13 @@ export function timeToRFC3339(timeString: string) {
     now.setHours(hours)
     now.setMinutes(minutes)
   }
-  if (60 - now.getMinutes() < now.getMinutes()) {
-    now.setHours(now.getHours() + 1)
-    now.setMinutes(0)
-  } else {
-    now.setMinutes(30)
+  if ((now.getMinutes() != 0 && now.getMinutes() != 30 ) || timeString == '') {
+    if (60 - now.getMinutes() < now.getMinutes()) {
+      now.setHours(now.getHours() + 1)
+      now.setMinutes(0)
+    } else {
+      now.setMinutes(30)
+    }
   }
   now.setSeconds(0)
   now.setMilliseconds(0)

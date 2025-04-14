@@ -119,7 +119,7 @@ function get_weather_icon() {
     return currentHour >= 6 && currentHour < 19 ? WiDaySunny : WiNightClear
   } else if (weather === 'Cloudy') {
     return WiCloudy
-  } else if (weather === 'Fog') {
+  } else if (weather === 'Low Visibility') {
     return WiFog
   } else if (weather === 'Rain') {
     return WiRain
@@ -151,9 +151,9 @@ const bgClass = computed(() => {
 async function predictionHandler () {
   isWaiting.value = true;
   apiClient.post(props.apiPath +
-    (selectedVehicleType.value != "" ? "?vehicle_type=" + selectedVehicleType.value : ""), {
+    (selectedVehicleType.value != "" ? "/" + selectedVehicleType.value.toLowerCase() : ""), {
     body: {
-      time: selectedTime.value,
+      time: timeToRFC3339(selectedTime.value),
       weatherCondition: selectedWeatherCondition.value
     }
   }
