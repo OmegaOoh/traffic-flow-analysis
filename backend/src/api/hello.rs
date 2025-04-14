@@ -4,7 +4,7 @@ use schemars::JsonSchema;
 
 #[derive(Serialize, Deserialize, JsonSchema, Debug, Clone)]
 #[serde(crate = "rocket::serde")]
-struct Hello {
+pub struct Hello {
     msg: String,
     tag: Option<String>
 }

@@ -1,7 +1,7 @@
-use chrono::{DateTime, FixedOffset, Utc};
+use chrono::{DateTime, FixedOffset};
 use rocket::http::Status;
 
-use crate::{api::weather_data, service::predictor};
+use crate::service::predictor;
 
 pub fn validate_time_weather(time_input: String, weather: String) -> Result<(DateTime<FixedOffset>, String), Status> {
     // Convert UTC time to Bangkok time (GMT+7)

@@ -10,7 +10,7 @@ use crate::service::database_connection::Logs;
 
 #[derive(Serialize, Deserialize, JsonSchema, Debug)]
 #[serde(crate = "rocket::serde")]
-struct FlowDesc {
+pub struct FlowDesc {
     time: String,
     speed: f64,
 }

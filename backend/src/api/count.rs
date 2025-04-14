@@ -1,7 +1,4 @@
-use chrono::{DateTime, FixedOffset, Utc};
-use chrono_tz::Asia::Bangkok;
 use rocket::serde::{self, json::Json, Deserialize, Serialize};
-use rocket_db_pools::sqlx::query;
 use rocket::http::Status;
 use rocket_okapi::openapi;
 use schemars::JsonSchema;
@@ -11,14 +8,14 @@ use crate::utils::input_validation;
 
 #[derive(Serialize, Deserialize, JsonSchema, Debug, Clone)]
 #[serde(crate = "rocket::serde")]
-struct Count {
+pub struct Count {
     count: f64,
     vehicle_type: String,
 }
 
 #[derive(Deserialize, JsonSchema)]
 #[serde(crate="rocket::serde")]
-struct CountRequestBody {
+pub struct CountRequestBody {
     #[schemars(schema_with = "crate::utils::schemars::datetime_schema")]
     time: String,
     weather_cond: String,

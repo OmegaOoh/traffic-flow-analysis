@@ -1,21 +1,19 @@
 use rocket::{http::Status, serde::{json::Json, Deserialize, Serialize}};
 use rocket_okapi::openapi;
 use schemars::JsonSchema;
-use chrono::{DateTime, FixedOffset, Utc};
-use chrono_tz::Asia::Bangkok;
 
 use crate::utils::input_validation;
 
 
 #[derive(Serialize, Deserialize, JsonSchema, Debug, Clone)]
 #[serde(crate = "rocket::serde")]
-struct Density {
+pub struct Density {
     density: f64,
 }
 
 #[derive(Deserialize, JsonSchema)]
 #[serde(crate="rocket::serde")]
-struct DensityRequestBody {
+pub struct DensityRequestBody {
     #[schemars(schema_with = "crate::utils::schemars::datetime_schema")]
     time: String,
     weather_cond: String

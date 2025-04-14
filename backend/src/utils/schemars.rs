@@ -1,4 +1,4 @@
-pub fn datetime_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
+pub fn datetime_schema(_gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
     use schemars::schema::{Schema, SchemaObject, InstanceType, Metadata};
     use serde_json::json;
 
