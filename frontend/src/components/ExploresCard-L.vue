@@ -43,7 +43,7 @@
       <select class="select select-lg w-full" v-model="selectedWeatherCondition">
         <option selected>Clear</option>
         <option>Cloudy</option>
-        <option>Fog</option>
+        <option>Low Visibility</option>
         <option>Rain</option>
       </select>
       <div v-if="props.useVehicleType">
