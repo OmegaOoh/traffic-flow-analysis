@@ -22,7 +22,7 @@ struct FlowRequestBody {
 }
 
 
-#[openapi(tag = "Flow Analysis")]
+#[openapi(tag = "Predictive")]
 #[post("/flow", format = "json", data="<flow_request>")]
 pub fn get_flow(flow_request: Json<FlowRequestBody>) -> Json<Flow> {
     let request_data = flow_request.0;

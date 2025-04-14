@@ -1,5 +1,4 @@
 use rocket::serde::{json::Json, Deserialize, Serialize};
-use rocket_db_pools::sqlx::query;
 use rocket_okapi::openapi;
 use schemars::JsonSchema;
 use chrono::{DateTime, FixedOffset, Utc};
@@ -23,22 +22,17 @@ struct CountRequestBody {
     weather_cond: Option<String>
 }
 
-#[derive(FromForm, JsonSchema)]
-struct CountQuery {
-    vehicle_type: Option<String>
-}
 
 
-#[openapi(tag = "Flow Analysis")]
-#[post("/count?<query..>", format = "json", data="<count_request>")]
-pub fn get_count(count_request: Json<CountRequestBody>, query: CountQuery ) -> Json<Count> {
+#[openapi(tag = "Predictive")]
+#[post("/count/<veh_type>", format = "json", data="<count_request>")]
+pub fn get_count(veh_type: &str, count_request: Json<CountRequestBody> ) -> Json<Count> {
     let request_data = count_request.0;
 
-    let vehicle_type = match query.vehicle_type.as_deref() {
-        Some("Motorcycle") => "Motorcycle",
-        Some("Car") => "Car",
-        Some("HeavyVehicle") => "HeavyVehicle",
-        None => "Motorcycle, Car, HeavyVehicle",
+    let vehicle_type = match veh_type {
+        "motorcycle" => "Motorcycle",
+        "car" => "Car",
+        "heavyvehicle" => "HeavyVehicle",
         _ => return Json(Count {
             count: 0,
             vehicle_type: "Invalid".to_string(),
@@ -63,6 +57,32 @@ pub fn get_count(count_request: Json<CountRequestBody>, query: CountQuery ) -> J
     rocket::serde::json::Json(Count {
         count: 10,
         vehicle_type,
+        weather_cond: weather,
+        time: time_str
+    })
+}
+
+#[openapi(tag = "Predictive")]
+#[post("/count", format = "json", data="<count_request>")]
+pub fn get_count_all(count_request: Json<CountRequestBody> ) -> Json<Count> {
+    let request_data = count_request.0;
+
+    // Convert UTC time to Bangkok time (GMT+7)
+    let time_input = request_data.time.unwrap_or_else(|| Utc::now().to_rfc3339());
+    let time = time_input.parse::<DateTime<FixedOffset>>().unwrap_or_else(|_| {
+        DateTime::parse_from_rfc3339(&Utc::now().to_rfc3339()).unwrap()
+    });
+    let bangkok_time = time.with_timezone(&Bangkok);
+    let time_str = bangkok_time.to_rfc3339(); 
+    //let time_str = bangkok_time..format("%Y-%m-%d %H:%M:%S %Z").to_string();
+
+    let weather = request_data.weather_cond.unwrap_or_else(|| String::from("few clouds"));
+    // TODO Add check for valid weather condition 
+
+
+    rocket::serde::json::Json(Count {
+        count: 30,
+        vehicle_type: "Motorcycle, Car, HeavyVehicle".to_string(),
         weather_cond: weather,
         time: time_str
     })

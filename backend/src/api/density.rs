@@ -22,7 +22,7 @@ struct DensityRequestBody {
 }
 
 
-#[openapi(tag = "Flow Analysis")]
+#[openapi(tag = "Predictive")]
 #[post("/density", format = "json", data="<density_request>")]
 pub fn get_density(density_request: Json<DensityRequestBody>) -> Json<Density> {
     let request_data = density_request.0;
