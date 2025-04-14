@@ -8,7 +8,6 @@ use crate::service::predictor::{
     HeavyVehicleCountInferencer,
     FlowInferencer,
     ModelInterface,
-    DensityInferencer,
     model_inference
 };
 
@@ -19,36 +18,29 @@ impl ModelInterface for VehicleCountInferencer {
 }
 
 
-impl ModelInterface for  MotorcycleCountInferencer {
+impl ModelInterface for MotorcycleCountInferencer {
     fn inference(time: DateTime<FixedOffset>, weather: String) -> Result<f64, String> {
         model_inference(&prediction_model::MOTORCYCLE_NUM_MODEL, time, weather)
     }
 }
 
 
-impl ModelInterface for  CarCountInferencer {
+impl ModelInterface for CarCountInferencer {
     fn inference(time: DateTime<FixedOffset>, weather: String) -> Result<f64, String> {
         model_inference(&prediction_model::CAR_NUM_MODEL, time, weather)
     }
 }
 
 
-impl ModelInterface for  HeavyVehicleCountInferencer {
+impl ModelInterface for HeavyVehicleCountInferencer {
     fn inference(time: DateTime<FixedOffset>, weather: String) -> Result<f64, String> {
         model_inference(&prediction_model::HEAVY_VEHICLE_NUM_MODEL, time, weather)
     }
 }
 
 
-impl ModelInterface for  FlowInferencer {
+impl ModelInterface for FlowInferencer {
     fn inference(time: DateTime<FixedOffset>, weather: String) -> Result<f64, String> {
         model_inference(&prediction_model::FLOW_MODEL, time, weather)
-    }
-}
-
-
-impl ModelInterface for  DensityInferencer {
-    fn inference(time: DateTime<FixedOffset>, weather: String) -> Result<f64, String> {
-        model_inference(&prediction_model::DENSITY_MODEL, time, weather)
     }
 }

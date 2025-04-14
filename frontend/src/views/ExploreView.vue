@@ -19,14 +19,6 @@ import LExploresCard from '@/components/ExploresCard-L.vue';
   </div>
   <div class='my-20'>
     <LExploresCard 
-      title="Predict Density of Vehicles" 
-      prediction-card="Vehicle Density" 
-      api-path="/density"
-      api-return="density"
-    />
-  </div>  
-  <div class='my-20'>
-    <RExploresCard 
       title="Predict Flow" 
       prediction-card="Flow" 
       api-path="/flow"
@@ -35,4 +27,3 @@ import LExploresCard from '@/components/ExploresCard-L.vue';
   </div>
 </div>
 </template>
->>>>>>> main

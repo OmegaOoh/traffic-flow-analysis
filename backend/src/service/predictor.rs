@@ -68,4 +68,3 @@ pub struct MotorcycleCountInferencer;
 pub struct CarCountInferencer;
 pub struct HeavyVehicleCountInferencer;
 pub struct FlowInferencer;
-pub struct DensityInferencer;

@@ -20,10 +20,6 @@ use rocket_cors::{
     Cors, CorsOptions 
 };
 
-fn initialize_predictor() {
-    let _ = &predictor::init_model();
-}
-
 fn make_cors() -> Cors {    
    let origins_str :String  =  env::var("ALLOWED_ORIGINS").unwrap_or("http://localhost:8000".to_string());
    let origins = origins_str.as_str().split(",").collect::<Vec<&str>>();
@@ -42,28 +38,27 @@ fn make_cors() -> Cors {
 fn rocket() -> _ {
     dotenv().ok(); // Load environment variable from .env file
     
-    initialize_predictor();
+    predictor::init_model();
+    
     rocket::build()
     .attach(Logs::init()).attach(make_cors())
-    .mount("/api/v1", routes![
+    .mount("/api/v2", routes![
         api::weather_data::get_all_weather,
         api::vehicle_data::get_all_vehicle,
         api::flow_data::get_all_flow,
     ])
-    .mount("/api/v1", openapi_get_routes![
-        api::hello::hello_world,
+    .mount("/api/v2", openapi_get_routes![
         api::weather_data::get_all_weather_docs,
         api::vehicle_data::get_all_vehicle_docs,
         api::flow_data::get_all_flow_docs,
         api::flow::get_flow,
-        api::density::get_density,
         api::count::get_count,
         api::count::get_count_all,
     ])
     .mount(
-        "/api/v1/ui/",
+        "/api/v2/ui/",
         make_swagger_ui(&SwaggerUIConfig {
-            url: "/api/v1/openapi.json".to_string(),
+            url: "/api/v2/openapi.json".to_string(),
             ..Default::default()
         }),
     )
