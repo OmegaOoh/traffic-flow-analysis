@@ -156,7 +156,7 @@ async function predictionHandler () {
       weather_cond: selectedWeatherCondition.value
     }
   ).then(response => {
-    responseValue.value = response.data[props.apiReturn];
+    responseValue.value = response.data[props.apiReturn].toFixed(2);
     isWaiting.value = false;
   }).catch(error => {
     console.error(error)

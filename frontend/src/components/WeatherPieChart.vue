@@ -10,7 +10,7 @@ ChartJS.register(Title, Tooltip, Legend, ArcElement)
 const weathersData = ref({
   labels: ["Loading..."],
   datasets: [ { 
-    label: 'Weathers',
+    label: 'Loading...',
     data: [1],
   } ]
 })
@@ -55,7 +55,7 @@ async function getWeathersData() {
       labels: lab,
       datasets: [
         {
-          label: 'Weathers',
+          label: 'Weather',
           data: count,
           backgroundColor: generateColors(count.length),
         },

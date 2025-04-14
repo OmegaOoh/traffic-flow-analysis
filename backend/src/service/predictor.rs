@@ -18,15 +18,15 @@ fn pre_process(time: DateTime<FixedOffset>, weather: String) -> (f64, f64) {
     let w = match weather.as_str() {
         "Clear" => 0.0,
         "Cloudy" => 1.0,
-        "Rainy" => 2.0,
-        "Foggy" => 3.0,
+        "Rain" => 2.0,
+        "Low Visibility" => 3.0,
         _ => 0.0,
     };
     (t as f64, w as f64)
 }
 
 pub fn is_weather_valid(weather: &str) -> bool {
-    matches!(weather, "Clear" | "Cloudy" | "Rainy" | "Foggy")
+    matches!(weather, "Clear" | "Cloudy" | "Rain" | "Low Visibility")
 }
 
 pub fn count_interference(time: DateTime<FixedOffset>, weather: String) -> f64 {

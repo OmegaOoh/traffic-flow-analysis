@@ -10,7 +10,7 @@ ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScal
 const trafficFlowData = ref({
   labels: ["Loading..."],
   datasets: [ {
-    label: 'Speed',
+    label: 'Loading...',
     data: [],
     borderColor: '',
     borderWidth: 2,
