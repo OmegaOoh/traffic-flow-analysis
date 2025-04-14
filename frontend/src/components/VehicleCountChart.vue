@@ -80,7 +80,7 @@ async function getFlowData() {
       labels: lab,
       datasets: [
         {
-          label: 'Motorcycle',
+          label: 'Motorcycles',
           data: mDataPoints,
           borderColor: generatedColor[0],
           borderWidth: 2,
@@ -96,7 +96,7 @@ async function getFlowData() {
           backgroundColor: generatedColor[1], 
         },
         {
-          label: 'HeavyVehicle',
+          label: 'Heavy Vehicles',
           data: hDataPoints,
           borderColor: generatedColor[2],
           borderWidth: 2,

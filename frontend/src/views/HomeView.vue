@@ -13,6 +13,7 @@ import VehicleLine from "@/components/VehicleCountChart.vue"
     <div class="md:grid md:grid-cols-2 gap-4">
       <div class="m-auto">
         <h2 class="text-5xl font-bold text-center top-0 bottom-0 mb-5">Our Data</h2>
+        <h4 class="text-2xl font-bold text-center mb-5">What we use to train prediction models</h4>
         <ul class="text-2xl list-disc mx-10">
           <li> Weather Description </li>
           <li> Number of Vehicle Each Type </li>

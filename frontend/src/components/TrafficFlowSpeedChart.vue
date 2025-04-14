@@ -33,7 +33,7 @@ const trafficFlowChartOptions = ref({
       grid: { color: 'rgba(255,255,255,0.25)' },
       title: {
         display: true,
-        text: 'Vehicle Count',
+        text: 'Speed (mph)',
         color: 'white',
       },
     },
