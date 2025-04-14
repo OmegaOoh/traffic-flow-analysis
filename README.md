@@ -25,4 +25,9 @@ Simple API web server to provide data about traffic flow
     2. motorcyclesCount: INT
     3. CarCount: INT
     4. heavyVehicleCount: INT
-  
+    
+## Prediction Model
+Prediction Model may not be accurate due to limited data and complexity of traffic flow. However, it can provide a general idea of traffic flow patterns and help in making informed decisions.
+Model can be trained using Pytorch and replace in `/backend/src/pytorch_models/`
+
+Note: Jupyter Notebook used to trained the model use on git will be provided in the repository.
