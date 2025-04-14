@@ -2,6 +2,7 @@ use rocket::{http::Status, serde::{json::Json, Deserialize, Serialize}};
 use rocket_okapi::openapi;
 use schemars::JsonSchema;
 
+use crate::service::predictor::{DensityInferencer, ModelInterface};
 use crate::utils::input_validation;
 
 
@@ -30,9 +31,12 @@ pub fn get_density(density_request: Json<DensityRequestBody>) -> Result<Json<Den
         Err(e) => return Err(e)
     };
     
-    println!("{:?}, {:?}", time, weather);
+    let prediction: f64 = match DensityInferencer::inference(time, weather) {
+        Ok(r) => r,
+        Err(_) => return Err(Status::InternalServerError),
+    };
 
     Ok(rocket::serde::json::Json(Density {
-        density: 5.01,
+        density: prediction,
     }))
 }

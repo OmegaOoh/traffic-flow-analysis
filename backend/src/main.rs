@@ -21,7 +21,7 @@ use rocket_cors::{
 };
 
 fn initialize_predictor() {
-    let _ = &predictor::VEHICLE_COUNT_MODEL;
+    let _ = &predictor::init_model();
 }
 
 fn make_cors() -> Cors {    

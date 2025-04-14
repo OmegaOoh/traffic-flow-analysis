@@ -2,7 +2,7 @@ use rocket::serde::{self, json::Json, Deserialize, Serialize};
 use rocket::http::Status;
 use rocket_okapi::openapi;
 use schemars::JsonSchema;
-use crate::service::predictor;
+use crate::service::predictor::{CarCountInferencer, HeavyVehicleCountInferencer, ModelInterface, MotorcycleCountInferencer, VehicleCountInferencer};
 use crate::utils::input_validation;
 
 
@@ -39,10 +39,20 @@ pub fn get_count(vehicle_type: &str, count_request: Json<CountRequestBody> ) -> 
         Err(e) => return Err(e)
     };
     
-    println!("{:?}, {:?}", time, weather);
+    let prediction_result: Result<f64, String> = match vtype.as_str() {
+        "Motorcycle" => MotorcycleCountInferencer::inference(time, weather),
+        "Car" => CarCountInferencer::inference(time, weather),
+        "HeavyVehicle" => HeavyVehicleCountInferencer::inference(time, weather),
+        _ => return Err(Status::BadRequest),
+    };
+    
+    let prediction: f64 = match prediction_result {
+        Ok(r) => r,
+        Err(_) => return Err(Status::InternalServerError),
+    };
 
     Ok(serde::json::Json(Count {
-        count: 501.0,
+        count: prediction,
         vehicle_type: vtype,
     }))
 }
@@ -57,9 +67,10 @@ pub fn get_count_all(count_request: Json<CountRequestBody> ) -> Result<Json<Coun
         Err(e) => return Err(e)
     };
     
-    println!("{:?}, {:?}", time, weather);
-    
-    let prediction: f64 = predictor::count_interference(time, weather);
+    let prediction: f64 = match VehicleCountInferencer::inference(time, weather) {
+        Ok(r) => r,
+        Err(_) => return Err(Status::InternalServerError),
+    };
 
     Ok(serde::json::Json(Count {
         count: prediction,

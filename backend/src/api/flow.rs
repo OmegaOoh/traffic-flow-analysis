@@ -2,6 +2,7 @@ use rocket::{http::Status, serde::{json::Json, Deserialize, Serialize}};
 use rocket_okapi::openapi;
 use schemars::JsonSchema;
 
+use crate::service::predictor::{FlowInferencer, ModelInterface};
 use crate::utils::input_validation;
 
 
@@ -30,9 +31,12 @@ pub fn get_flow(flow_request: Json<FlowRequestBody>) -> Result<Json<Flow>, Statu
         Err(e) => return Err(e)
     };
     
-    println!("{:?}, {:?}", time, weather);
+    let prediction = match FlowInferencer::inference(time, weather) {
+        Ok(p) => p,
+        Err(_) => return Err(Status::InternalServerError)
+    };
 
     Ok(rocket::serde::json::Json(Flow {
-        flow: 50.1,
+        flow: prediction,
     }))
 }

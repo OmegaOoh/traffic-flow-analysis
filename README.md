@@ -1,5 +1,4 @@
 # traffic-flow-analysis
-<<<<<<< HEAD
 Simple API web server to provide data about traffic flow
 
 ## how to run

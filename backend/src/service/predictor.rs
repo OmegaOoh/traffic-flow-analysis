@@ -1,53 +1,71 @@
 use std::sync::LazyLock;
+
 use chrono::{DateTime, Duration, FixedOffset, Timelike};
 use tch::{CModule, Tensor, Device};
-use std::env;
-use std::path::PathBuf;
+use crate::service::prediction_model;
 
-static MODELS_PATH: LazyLock<PathBuf> = LazyLock::new(|| {
-    env::current_dir().unwrap().join("src").join("pytorch_models")
-});
 
-pub static VEHICLE_COUNT_MODEL: LazyLock<CModule> = LazyLock::new(|| {
-    CModule::load(MODELS_PATH.join("vehicle_count_model.pt"))
-        .unwrap_or_else(|e| panic!("Failed to load vehicle count model: {}", e))
-});
-
-fn pre_process(time: DateTime<FixedOffset>, weather: String) -> (f64, f64) {
-    let t = time.hour() as f64 + (time.minute() as f64)/60.0;
-    let w = match weather.as_str() {
-        "Clear" => 0.0,
-        "Cloudy" => 1.0,
-        "Rain" => 2.0,
-        "Low Visibility" => 3.0,
-        _ => 0.0,
-    };
-    (t as f64, w as f64)
+pub fn init_model() {
+    // Initialize model by call them once
+    let _ = prediction_model::TOTAL_VEHICLE_NUM_MODEL;
+    let _ = prediction_model::MOTORCYCLE_NUM_MODEL;
+    let _ = prediction_model::CAR_NUM_MODEL;
+    let _ = prediction_model::HEAVY_VEHICLE_NUM_MODEL;
+    let _ = prediction_model::FLOW_MODEL;
+    let _ = prediction_model::DENSITY_MODEL;
 }
 
 pub fn is_weather_valid(weather: &str) -> bool {
     matches!(weather, "Clear" | "Cloudy" | "Rain" | "Low Visibility")
 }
 
-pub fn count_interference(time: DateTime<FixedOffset>, weather: String) -> f64 {
-    let (hour, weather_code) = pre_process(time, weather.clone());
-    let day = 3.0; // TODO, remove this conversion 
+fn pre_process(time: DateTime<FixedOffset>, weather: String) -> Result<(f64, f64), String> {
+    let t = time.hour() as f64 + (time.minute() as f64)/60.0;
+    let w = match weather.as_str() {
+        "Clear" => 0.0,
+        "Cloudy" => 1.0,
+        "Rain" => 2.0,
+        "Low Visibility" => 3.0,
+        _ => return Err("Weather is not Supported".to_string()),
+    };
+    Ok((t as f64, w as f64))
+}
+
+
+pub(crate) fn model_inference(model: &LazyLock<CModule>,time: DateTime<FixedOffset>, weather: String) -> Result<f64, String> {
+    let (hour, weather_code) = match pre_process(time, weather.clone()) {
+        Ok(r) => r,
+        Err(e) => return Err(e)
+    };
 
     let past_time = time - Duration::minutes(30);
-    let (past_hour, _) = pre_process(past_time, weather);
+    let (past_hour, _) = match pre_process(past_time, weather){
+        Ok(r) => r,
+        Err(e) => return Err(e)
+    };
 
     let input_data: Vec<f32> = vec![
-        past_hour as f32, weather_code as f32, day as f32,
-        hour as f32, weather_code as f32, day as f32,
+        past_hour as f32, weather_code as f32,
+        hour as f32, weather_code as f32
     ];
 
     let tensor = Tensor::from_slice(&input_data)
-        .reshape(&[1, 2, 3])
+        .reshape(&[1, 2, 2])
         .to_device(Device::cuda_if_available());
 
-    println!("Input Tensor shape: {:?}", tensor.size());
-    println!("Input Tensor data: {:?}", tensor.data());
-
-    let output = VEHICLE_COUNT_MODEL.forward_ts(&[tensor]).unwrap();
-    output.double_value(&[0])
+    let output = model.forward_ts(&[tensor]).unwrap();
+    Ok(output.double_value(&[0]))
 }
+
+
+// Trait and Struct
+pub trait ModelInterface {
+    fn inference(time: DateTime<FixedOffset>, weather: String) -> Result<f64, String>;
+}
+
+pub struct VehicleCountInferencer;
+pub struct MotorcycleCountInferencer;
+pub struct CarCountInferencer;
+pub struct HeavyVehicleCountInferencer;
+pub struct FlowInferencer;
+pub struct DensityInferencer;
