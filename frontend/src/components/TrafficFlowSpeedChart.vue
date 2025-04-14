@@ -17,12 +17,26 @@ const trafficFlowData = ref({
     fill: false,
   } ]
 })
-const trafficChartOptions = ref({
+const trafficFlowChartOptions = ref({
   responsive: true,
   maintainAspectRatio: false,
   scales: {
-    x: { grid: { color: 'rgba(255,255,255,0.25)' } },
-    y: { grid: { color: 'rgba(255,255,255,0.25)' } }
+    x: { 
+      grid: { color: 'rgba(255,255,255,0.25)' },
+      title: {
+        display: true,
+        text: 'Time',
+        color: 'white',
+      },
+    },
+    y: {
+      grid: { color: 'rgba(255,255,255,0.25)' },
+      title: {
+        display: true,
+        text: 'Vehicle Count',
+        color: 'white',
+      },
+    },
   },
   plugins: {
     title: {
@@ -83,7 +97,7 @@ async function getFlowData() {
 <template>
 <Line
   id="traffic-flow-chart"
-  :options="trafficChartOptions"
+  :options="trafficFlowChartOptions"
   :data="trafficFlowData"
 />
 </template>

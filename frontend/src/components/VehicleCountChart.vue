@@ -7,7 +7,7 @@ import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, Ca
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale)
 
-const trafficFlowData = ref({
+const vehicleCountData = ref({
   labels: ["Loading..."],
   datasets: [ {
     label: 'Count',
@@ -17,17 +17,31 @@ const trafficFlowData = ref({
     fill: false,
   } ]
 })
-const trafficChartOptions = ref({
+const vehicleCountChartOptions = ref({
   responsive: true,
   maintainAspectRatio: false,
   scales: {
-    x: { grid: { color: 'rgba(255,255,255,0.25)' } },
-    y: { grid: { color: 'rgba(255,255,255,0.25)' } }
+    x: { 
+      grid: { color: 'rgba(255,255,255,0.25)' },
+      title: {
+        display: true,
+        text: 'Time',
+        color: 'white',
+      },
+    },
+    y: {
+      grid: { color: 'rgba(255,255,255,0.25)' },
+      title: {
+        display: true,
+        text: 'Vehicle Count',
+        color: 'white',
+      },
+    },
   },
   plugins: {
     title: {
       display: true,
-      text: 'Traffic Flow Speed Over Time',
+      text: 'Vehicle Count by Type Over Time',
       fontSize: 24,
       color: "white",
       padding: {
@@ -62,7 +76,7 @@ async function getFlowData() {
       hDataPoints.push(d.count_h);
     }
     const generatedColor = generateColors(3);
-    trafficFlowData.value = {
+    vehicleCountData.value = {
       labels: lab,
       datasets: [
         {
@@ -94,8 +108,8 @@ async function getFlowData() {
 
   } catch (error) {
     console.error('Error fetching vehicle data:', error)
-    trafficFlowData.value.labels = ["Error loading data"];
-    trafficFlowData.value.datasets[0].data = [];
+    vehicleCountData.value.labels = ["Error loading data"];
+    vehicleCountData.value.datasets[0].data = [];
   }
 }
 </script>
@@ -103,7 +117,7 @@ async function getFlowData() {
 <template>
 <Line
   id="vehicle-count-chart"
-  :options="trafficChartOptions"
-  :data="trafficFlowData"
+  :options="vehicleCountChartOptions"
+  :data="vehicleCountData"
 />
 </template>
