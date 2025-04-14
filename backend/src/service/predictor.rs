@@ -1,6 +1,6 @@
 use std::sync::LazyLock;
 use chrono::{DateTime, Duration, FixedOffset, Timelike};
-use tch::{CModule, Tensor, Device, IValue};
+use tch::{CModule, Tensor, Device};
 use std::env;
 use std::path::PathBuf;
 
@@ -29,9 +29,9 @@ pub fn is_weather_valid(weather: &str) -> bool {
     matches!(weather, "Clear" | "Cloudy" | "Rainy" | "Foggy")
 }
 
-pub fn count_interference(time: DateTime<FixedOffset>, weather: String, is_weekend: bool) -> f64 {
+pub fn count_interference(time: DateTime<FixedOffset>, weather: String) -> f64 {
     let (hour, weather_code) = pre_process(time, weather.clone());
-    let day = if is_weekend { 2.0 } else { 6.0 }; // TODO, remove this conversion 
+    let day = 3.0; // TODO, remove this conversion 
 
     let past_time = time - Duration::minutes(30);
     let (past_hour, _) = pre_process(past_time, weather);

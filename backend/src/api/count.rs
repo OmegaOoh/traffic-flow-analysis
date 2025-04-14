@@ -1,12 +1,12 @@
-use rocket::serde::{json::Json, Deserialize, Serialize};
+use chrono::{DateTime, FixedOffset, Utc};
+use chrono_tz::Asia::Bangkok;
+use rocket::serde::{self, json::Json, Deserialize, Serialize};
 use rocket_db_pools::sqlx::query;
 use rocket::http::Status;
 use rocket_okapi::openapi;
 use schemars::JsonSchema;
-use chrono::{DateTime, FixedOffset, Utc};
-use chrono_tz::Asia::Bangkok;
-
 use crate::service::predictor;
+use crate::utils::input_validation;
 
 
 #[derive(Serialize, Deserialize, JsonSchema, Debug, Clone)]
@@ -14,61 +14,58 @@ use crate::service::predictor;
 struct Count {
     count: f64,
     vehicle_type: String,
-    weather_cond: String,
-    time: String,
 }
 
 #[derive(Deserialize, JsonSchema)]
 #[serde(crate="rocket::serde")]
 struct CountRequestBody {
     #[schemars(schema_with = "crate::utils::schemars::datetime_schema")]
-    time: Option<String>,
-    is_weekend: Option<bool>,
-    weather_cond: Option<String>,
-}
-
-#[derive(FromForm, JsonSchema)]
-struct CountQuery {
-    vehicle_type: Option<String>
+    time: String,
+    weather_cond: String,
 }
 
 
-#[openapi(tag = "Flow Analysis")]
-#[post("/count?<query..>", format = "json", data="<count_request>")]
-pub fn get_count(count_request: Json<CountRequestBody>, query: CountQuery) -> Result<Json<Count>, Status> {
+
+#[openapi(tag = "Predictive")]
+#[post("/count/<vehicle_type>", format = "json", data="<count_request>")]
+pub fn get_count(vehicle_type: &str, count_request: Json<CountRequestBody> ) -> Result<Json<Count>, Status> {
     let request_data = count_request.0;
 
-    let vehicle_type = match query.vehicle_type.as_deref() {
-        Some("Motorcycle") => "Motorcycle",
-        Some("Car") => "Car",
-        Some("HeavyVehicle") => "HeavyVehicle",
-        None => "Motorcycle, Car, HeavyVehicle",
-        _ => return Err(Status::BadRequest),
-    }.to_string();
-
-    // Convert UTC time to Bangkok time (GMT+7)
-    let time_input = request_data.time.unwrap_or_else(|| Utc::now().to_rfc3339());
-    let time = match time_input.parse::<DateTime<FixedOffset>>() {
-        Ok(t) => t,
-        Err(_) => return Err(Status::BadRequest),
+    
+    let vtype: String = match input_validation::validate_vehicle(vehicle_type) {
+        Ok(r) => r,
+        Err(e) => return Err(e)
     };
-    let bangkok_time = time.with_timezone(&Bangkok);
-    let time_str = bangkok_time.to_rfc3339(); 
+    
+    let (time, weather) = match input_validation::validate_time_weather(request_data.time, request_data.weather_cond) {
+        Ok(r) => r,
+        Err(e) => return Err(e)
+    };
+    
+    println!("{:?}, {:?}", time, weather);
 
-    let weather = request_data.weather_cond.unwrap_or_else(|| String::from("Clear"));
+    Ok(serde::json::Json(Count {
+        count: 501.0,
+        vehicle_type: vtype,
+    }))
+}
 
-    if !predictor::is_weather_valid(&weather) {
-        return Err(Status::BadRequest);
-    }
+#[openapi(tag = "Predictive")]
+#[post("/count", format = "json", data="<count_request>")]
+pub fn get_count_all(count_request: Json<CountRequestBody> ) -> Result<Json<Count>, Status> {
+    let request_data = count_request.0;
 
-    let is_weekend = request_data.is_weekend.unwrap_or(false);
+    let (time, weather) = match input_validation::validate_time_weather(request_data.time, request_data.weather_cond) {
+        Ok(r) => r,
+        Err(e) => return Err(e)
+    };
+    
+    println!("{:?}, {:?}", time, weather);
+    
+    let prediction: f64 = predictor::count_interference(time, weather);
 
-    let prediction: f64 = predictor::count_interference(time, weather.clone(), is_weekend);
-
-    Ok(rocket::serde::json::Json(Count {
+    Ok(serde::json::Json(Count {
         count: prediction,
-        vehicle_type,
-        weather_cond: weather,
-        time: time_str
+        vehicle_type: "Motorcycle, Car, HeavyVehicle".to_string(),
     }))
 }
