@@ -23,7 +23,7 @@ use rocket_cors::{
 fn make_cors() -> Cors {    
    let origins_str :String  =  env::var("ALLOWED_ORIGINS").unwrap_or("http://localhost:8000".to_string());
    let origins = origins_str.as_str().split(",").collect::<Vec<&str>>();
-    let allowed_origins= AllowedOrigins::some_exact(&origins);
+   let allowed_origins= AllowedOrigins::some_exact(&origins);
     
     CorsOptions {
         allowed_origins,
@@ -54,6 +54,7 @@ fn rocket() -> _ {
         api::flow::get_flow,
         api::count::get_count,
         api::count::get_count_all,
+        api::alive::is_alive,
     ])
     .mount(
         "/api/v2/ui/",
