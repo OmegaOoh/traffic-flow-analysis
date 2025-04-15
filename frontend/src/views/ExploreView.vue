@@ -8,7 +8,7 @@ import LExploresCard from '@/components/ExploresCard-L.vue';
 <div class="p-4">
   <h1 class="text-5xl font-bold text-center mb-10"> Play around with our APIs! </h1>
   
-  <div class='mb-20'>
+  <div class='mb-20' id="vehicle-count-prediction">
     <RExploresCard 
         title="Predict Number of Vehicles" 
         prediction-card="Vehicle Count" 
@@ -17,7 +17,7 @@ import LExploresCard from '@/components/ExploresCard-L.vue';
         :use-vehicle-type='true'
     />
   </div>
-  <div class='my-20'>
+  <div class='my-20' id="flow-prediction">
     <LExploresCard 
       title="Predict Flow" 
       prediction-card="Flow" 
