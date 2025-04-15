@@ -1,0 +1,42 @@
+name: Rust Unit Test Backend
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      LIBTORCH_USE_PYTORCH: 1
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.11'
+  
+      - name: Set up Python Dependency
+        run: |
+          pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
+
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      
+      - name: find LIBTORCH path
+        id: get_torch_path
+        run: |
+          TORCH_PATH=$(python -c "import torch; file_path = torch.__file__; print((str(torch).replace('/__init__.py', '/lib')).split(\"from\")[1].strip().strip('>').strip(\"'\"))")
+          echo "torch_path=$TORCH_PATH" >> $GITHUB_OUTPUT
+
+      - name: Run Backend Tests
+        env: 
+          LD_LIBRARY_PATH: "${{ env.LD_LIBRARY_PATH }}:${{ steps.get_torch_path.outputs.torch_path }}"
+        run: |
+          cd backend
+          cargo test --quiet
