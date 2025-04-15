@@ -2,6 +2,7 @@
 Simple API web server to provide data about traffic flow
 
 ## how to run
+1. Go into the backend directory
 1. Copy 'sample.env' to '.env'
 2. Edit `ALLOWED_ORIGINS` in `.env` file to be your __frontend__ url
 3. Edit `url` of `ROCKET_DATABASE` in `.env` file to be your __database__ credentials (using database connection URI).
@@ -12,7 +13,16 @@ Simple API web server to provide data about traffic flow
   ```sh
     cargo run
   ```
+7. Go to frontend directory
+8. Copy 'sample.env' to '.env'
+9. Change `VITE_APP_ENDPOINT` to be your __backend__ including path to API Endpoint. Default Path is `/api/v2`
+9. Install and Run __frontend__ with 
 
+  ```sh
+    npm install
+    npm start
+  ```
+  
 ## MYSQL database required Table and Columns
 1. weatherData
     1. time: DateTime
