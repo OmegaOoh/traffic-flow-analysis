@@ -43,8 +43,9 @@ pub fn get_count(vehicle_type: &str, count_request: Json<CountRequestBody> ) -> 
         "Motorcycle" => MotorcycleCountInferencer::inference(time, weather),
         "Car" => CarCountInferencer::inference(time, weather),
         "HeavyVehicle" => HeavyVehicleCountInferencer::inference(time, weather),
-        _ => return Err(Status::NotFound),
+        _ => return Err(Status::InternalServerError),
     };
+    
     
     let prediction: f64 = match prediction_result {
         Ok(r) => r,

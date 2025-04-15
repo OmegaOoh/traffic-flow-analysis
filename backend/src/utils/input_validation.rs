@@ -25,7 +25,7 @@ pub fn validate_vehicle(vehicle_type: &str) -> Result<String, Status> {
     } else if vehicle_type == "heavyvehicle" {
         vtype = "HeavyVehicle".to_string()
     } else {
-        return Err(Status::BadRequest);
+        return Err(Status::NotFound);
     }
 
     Ok(vtype)
@@ -89,7 +89,6 @@ mod test_vehicle_validation {
     fn test_validate_vehicle_invalid() {
         let result = validate_vehicle("invalid");
         assert!(result.is_err());
-        assert_eq!(result.err().unwrap(),Status::BadRequest);
+        assert_eq!(result.err().unwrap(),Status::NotFound);
     }
-    
 }
