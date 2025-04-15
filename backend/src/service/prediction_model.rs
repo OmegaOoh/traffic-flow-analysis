@@ -3,6 +3,17 @@ use std::env;
 use std::path::PathBuf;
 use tch::CModule;
 
+pub fn init_model() {
+    // Initialize model by call them once
+    let _ = TOTAL_VEHICLE_NUM_MODEL;
+    let _ = MOTORCYCLE_NUM_MODEL;
+    let _ = CAR_NUM_MODEL;
+    let _ = HEAVY_VEHICLE_NUM_MODEL;
+    let _ = FLOW_MODEL;
+    let _ = DENSITY_MODEL;
+}
+
+
 static MODELS_PATH: LazyLock<PathBuf> = LazyLock::new(|| {
     env::current_dir().unwrap().join("src").join("pytorch_models")
 });

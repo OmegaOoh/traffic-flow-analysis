@@ -2,7 +2,7 @@ use rocket::{http::Status, serde::{json::Json, Deserialize, Serialize}};
 use rocket_okapi::openapi;
 use schemars::JsonSchema;
 
-use crate::service::predictor::{FlowInferencer, ModelInterface};
+use crate::service::predictor::inference::{FlowInferencer, ModelInterface};
 use crate::utils::input_validation;
 
 

@@ -4,6 +4,7 @@ extern crate rocket;
 mod api;
 mod service;
 mod utils;
+use service::prediction_model::init_model;
 
 // Environment Variables
 use dotenv::dotenv;
@@ -12,7 +13,6 @@ use std::env;
 use rocket_okapi::openapi_get_routes;
 use rocket_okapi::swagger_ui::{make_swagger_ui, SwaggerUIConfig};
 use service::database_connection::Logs;
-use service::predictor;
 use rocket_db_pools::Database;
 use rocket::http::Method;
 use rocket_cors::{
@@ -38,7 +38,7 @@ fn make_cors() -> Cors {
 fn rocket() -> _ {
     dotenv().ok(); // Load environment variable from .env file
     
-    predictor::init_model();
+    init_model();
     
     rocket::build()
     .attach(Logs::init()).attach(make_cors())

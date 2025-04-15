@@ -2,7 +2,7 @@ use rocket::serde::{self, json::Json, Deserialize, Serialize};
 use rocket::http::Status;
 use rocket_okapi::openapi;
 use schemars::JsonSchema;
-use crate::service::predictor::{CarCountInferencer, HeavyVehicleCountInferencer, ModelInterface, MotorcycleCountInferencer, VehicleCountInferencer};
+use crate::service::predictor::inference::{CarCountInferencer, HeavyVehicleCountInferencer, ModelInterface, MotorcycleCountInferencer, VehicleCountInferencer};
 use crate::utils::input_validation;
 
 

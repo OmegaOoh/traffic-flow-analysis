@@ -1,7 +1,7 @@
 use chrono::{DateTime, FixedOffset};
 
 use crate::service::prediction_model;
-use crate::service::predictor::{
+use crate::service::predictor::inference::{
     VehicleCountInferencer,
     MotorcycleCountInferencer,
     CarCountInferencer,
