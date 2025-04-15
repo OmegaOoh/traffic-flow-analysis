@@ -50,4 +50,14 @@ mod test {
         assert!(result.is_err());
         assert_eq!(result.err().unwrap(), String::from("Weather is not Supported"));
     }
+
+    #[test]
+    fn test_pre_process_invalid_weather_format() {
+        let datetime_str = "2023-01-01T12:00:00+07:00";
+        let datetime = DateTime::parse_from_rfc3339(datetime_str).unwrap();
+        let result = pre_process(datetime, String::from("clear")); // Must be capitalized
+        assert!(result.is_err());
+        assert_eq!(result.err().unwrap(), String::from("Weather is not Supported"));
+    }
+
 }
