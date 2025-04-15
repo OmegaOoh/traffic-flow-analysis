@@ -22,7 +22,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - name: Install Bun
+      run: curl -fsSL https://bun.sh/install | bash
+    - name: Add Bun to PATH
+      run: echo "$HOME/.bun/bin" >> $GITHUB_PATH
     - run: |
         cd frontend
-        npm install
-        npm test
+        bun install
+        bun test
