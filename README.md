@@ -1,5 +1,5 @@
 # traffic-flow-analysis
-Simple API web server to provide data about traffic flow
+Simple API web application to provide data about traffic flow
 
 ## how to run
 1. Go into the backend directory
