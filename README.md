@@ -1,4 +1,7 @@
-# traffic-flow-analysis
+# Traffic Flow Analysis
+[![Rust Unit Test Backend](https://github.com/OmegaOoh/traffic-flow-analysis/actions/workflows/rust_unit_test_backend.yml/badge.svg)](https://github.com/OmegaOoh/traffic-flow-analysis/actions/workflows/rust_unit_test_backend.yml)
+[![Frontend Unit Test](https://github.com/OmegaOoh/traffic-flow-analysis/actions/workflows/node_frontend_unit_test.yml/badge.svg)](https://github.com/OmegaOoh/traffic-flow-analysis/actions/workflows/node_frontend_unit_test.yml)
+
 Simple API web application to provide data about traffic flow
 
 ## how to run
