@@ -10,7 +10,7 @@ use crate::service::database_connection::Logs;
 
 #[derive(Serialize, Deserialize, JsonSchema, Debug)]
 #[serde(crate = "rocket::serde")]
-struct VehicleDesc {
+pub struct VehicleDesc {
     time: String,
     count_m: f64,
     count_c: f64,

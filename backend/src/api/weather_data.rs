@@ -9,7 +9,7 @@ use crate::service::database_connection::Logs;
 
 #[derive(Serialize, Deserialize, JsonSchema, Debug)]
 #[serde(crate = "rocket::serde")]
-struct WeatherDesc {
+pub struct WeatherDesc {
     weather: Option<String>,
     count: i64
 }

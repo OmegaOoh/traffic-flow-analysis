@@ -10,7 +10,7 @@ ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScal
 const vehicleCountData = ref({
   labels: ["Loading..."],
   datasets: [ {
-    label: 'Count',
+    label: 'Loading...',
     data: [],
     borderColor: '',
     borderWidth: 2,
