@@ -1,5 +1,6 @@
 mod test_count;
 mod test_flow;
+mod test_desc;
 
 use std::process::{Child, Command, Stdio};
 use std::time::Duration;
