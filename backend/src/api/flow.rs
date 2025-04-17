@@ -40,3 +40,47 @@ pub fn get_flow(flow_request: Json<FlowRequestBody>) -> Result<Json<Flow>, Statu
         flow: prediction,
     }))
 }
+
+#[cfg(test)]
+mod test {
+    use rocket::{http::Status, serde::json::Json};
+
+    use crate::api::flow::{get_flow, FlowRequestBody};
+
+    #[test]
+    fn test_flow_endpoint_all_valid() {
+        let request = Json(FlowRequestBody {
+            time: String::from("2023-05-15T14:30:00+07:00"),
+            weather_cond: String::from("Clear"),
+        });
+        let response = get_flow(request);
+        
+        assert!(response.is_ok());
+        let result = response.unwrap();
+        assert!(result.flow > 0.0);
+    }
+    
+    #[test]
+    fn test_flow_endpoint_all_invalid_date() {
+        let request = Json(FlowRequestBody {
+            time: String::from("a-05-15T14:30:00+07:00"),
+            weather_cond: String::from("Clear"),
+        });
+        let response = get_flow(request);
+        
+        assert!(response.is_err());
+        assert_eq!(response.unwrap_err(), Status::BadRequest);
+    }
+    
+    #[test]
+    fn test_flow_endpoint_all_invalid_weather() {
+        let request = Json(FlowRequestBody {
+            time: String::from("2023-05-15T14:30:00+07:00"),
+            weather_cond: String::from("Candy"),
+        });
+        let response = get_flow(request);
+        
+        assert!(response.is_err());
+        assert_eq!(response.unwrap_err(), Status::BadRequest);
+    }
+}

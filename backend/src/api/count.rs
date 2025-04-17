@@ -78,3 +78,70 @@ pub fn get_count_all(count_request: Json<CountRequestBody> ) -> Result<Json<Coun
         vehicle_type: "Motorcycle, Car, HeavyVehicle".to_string(),
     }))
 }
+
+#[cfg(test)]
+mod test {
+    use rocket::{http::Status, serde::json::Json};
+    use crate::api::count::{get_count, get_count_all, CountRequestBody};
+
+    #[test]
+    fn test_count_all_valid() {
+        let request = Json(CountRequestBody {
+            time: String::from("2023-05-15T14:30:00+07:00"),
+            weather_cond: String::from("Clear"),
+        });
+        let response = get_count_all(request);
+        assert!(response.is_ok());
+        let response = response.unwrap().0;
+        assert!(response.count >= 0.0);
+        assert!(response.vehicle_type == "Motorcycle, Car, HeavyVehicle");
+    }
+    
+    #[test]
+    fn test_count_all_invalid_time() {
+        let request = Json(CountRequestBody {
+            time: String::from("a-05-15T14:30:00+07:00"),
+            weather_cond: String::from("Clear"),
+        });
+        let response = get_count_all(request);
+        assert!(response.is_err());
+        assert_eq!(response.unwrap_err(), Status::BadRequest);
+    }
+    
+    #[test]
+    fn test_count_all_invalid_weather() {
+        let request = Json(CountRequestBody {
+            time: String::from("2023-05-15T14:30:00+07:00"),
+            weather_cond: String::from("Candy"),
+        });
+        let response = get_count_all(request);
+        assert!(response.is_err());
+        assert_eq!(response.unwrap_err(), Status::BadRequest);
+    }
+    
+    #[test]
+    fn test_count_with_type_valid() {
+        let request = Json(CountRequestBody {
+            time: String::from("2023-05-15T14:30:00+07:00"),
+            weather_cond: String::from("Clear"),
+        });
+        let response = get_count("car", request);
+        assert!(response.is_ok());
+        let response = response.unwrap().0;
+        assert!(response.count >= 0.0);
+        assert!(response.vehicle_type == "Car");
+    }
+    
+    #[test]
+    fn test_count_with_type_invalid() {
+        let request = Json(CountRequestBody {
+            time: String::from("2023-05-15T14:30:00+07:00"),
+            weather_cond: String::from("Clear"),
+        });
+        let response = get_count("helicopter", request);
+        assert!(response.is_err());
+        assert_eq!(response.unwrap_err(), Status::NotFound);
+    }
+    
+    
+}

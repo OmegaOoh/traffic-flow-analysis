@@ -4,7 +4,6 @@ extern crate rocket;
 mod api;
 mod service;
 mod utils;
-use service::prediction_model::init_model;
 
 // Environment Variables
 use dotenv::dotenv;
@@ -37,8 +36,6 @@ fn make_cors() -> Cors {
 #[launch]
 fn rocket() -> _ {
     dotenv().ok(); // Load environment variable from .env file
-    
-    init_model();
     
     rocket::build()
     .attach(Logs::init()).attach(make_cors())
