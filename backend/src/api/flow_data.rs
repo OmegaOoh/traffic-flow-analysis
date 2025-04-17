@@ -1,4 +1,4 @@
-use rocket::serde::{Deserialize, Serialize};
+use rocket::serde::{json::Json, Deserialize, Serialize};
 use rocket_okapi::openapi;
 use rocket_okapi::okapi::schemars;
 use schemars::JsonSchema;
@@ -16,17 +16,9 @@ pub struct FlowDesc {
 }
 
 #[openapi(tag="Descriptive")]
-#[get("/desc/flow", rank=2)]
-pub fn get_all_flow_docs() -> rocket::serde::json::Json<Vec<FlowDesc>> {
-    // Open API documentation
-    rocket::serde::json::Json(vec![])
-}
-
-
-#[openapi(tag="Descriptive")]
 #[get("/desc/flow")]
 pub async fn get_all_flow(
-    db: &Logs) -> rocket::serde::json::Json<Vec<FlowDesc>>
+    db: &Logs) -> Json<Vec<FlowDesc>>
 {   
     let sql = String::from (
         "SELECT
@@ -61,5 +53,5 @@ pub async fn get_all_flow(
         })
         .collect();
 
-    rocket::serde::json::Json(flow_data)
+    Json(flow_data)
 }

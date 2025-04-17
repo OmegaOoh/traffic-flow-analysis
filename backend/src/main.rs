@@ -42,15 +42,15 @@ fn rocket() -> _ {
     
     rocket::build()
     .attach(Logs::init()).attach(make_cors())
-    .mount("/api/v2", routes![
+    // .mount("/api/v2", routes![
+    //     api::weather_data::get_all_weather,
+    //     api::vehicle_data::get_all_vehicle,
+    //     api::flow_data::get_all_flow,
+    // ])
+    .mount("/api/v2", openapi_get_routes![
         api::weather_data::get_all_weather,
         api::vehicle_data::get_all_vehicle,
         api::flow_data::get_all_flow,
-    ])
-    .mount("/api/v2", openapi_get_routes![
-        api::weather_data::get_all_weather_docs,
-        api::vehicle_data::get_all_vehicle_docs,
-        api::flow_data::get_all_flow_docs,
         api::flow::get_flow,
         api::count::get_count,
         api::count::get_count_all,

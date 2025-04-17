@@ -1,4 +1,4 @@
-use rocket::serde::{self, Deserialize, Serialize};
+use rocket::serde::{json::Json, Deserialize, Serialize};
 use rocket_okapi::openapi;
 use rocket_okapi::okapi::schemars;
 use schemars::JsonSchema;
@@ -15,16 +15,9 @@ pub struct WeatherDesc {
 }
 
 #[openapi(tag="Descriptive")]
-#[get("/desc/weather", rank=2)]
-pub fn get_all_weather_docs() -> serde::json::Json<Vec<WeatherDesc>> {
-    // Open API documentation
-    serde::json::Json(vec![])
-}
-
-
 #[get("/desc/weather")]
 pub async fn get_all_weather(
-    db: &Logs) -> serde::json::Json<Vec<WeatherDesc>>
+    db: &Logs) -> Json<Vec<WeatherDesc>>
 {   
     let sql = String::from (
         "SELECT
@@ -55,5 +48,5 @@ pub async fn get_all_weather(
         })
         .collect();
 
-    serde::json::Json(weathers_counts)
+    Json(weathers_counts)
 }

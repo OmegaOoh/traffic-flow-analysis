@@ -1,4 +1,4 @@
-use rocket::serde::{Deserialize, Serialize};
+use rocket::serde::{self, Deserialize, Serialize};
 use rocket_okapi::openapi;
 use rocket_okapi::okapi::schemars;
 use schemars::JsonSchema;
@@ -17,18 +17,11 @@ pub struct VehicleDesc {
     count_h: f64
 }
 
-#[openapi(tag="Descriptive")]
-#[get("/desc/vehicle", rank=2)]
-pub fn get_all_vehicle_docs() -> rocket::serde::json::Json<Vec<VehicleDesc>> {
-    // Open API documentation
-    rocket::serde::json::Json(vec![])
-}
-
 
 #[openapi(tag="Descriptive")]
 #[get("/desc/vehicle")]
 pub async fn get_all_vehicle(
-    db: &Logs) -> rocket::serde::json::Json<Vec<VehicleDesc>>
+    db: &Logs) -> serde::json::Json<Vec<VehicleDesc>>
 {   
     let sql = String::from (
         "SELECT
@@ -67,5 +60,5 @@ pub async fn get_all_vehicle(
         })
         .collect();
 
-    rocket::serde::json::Json(vehicle_counts)
+    serde::json::Json(vehicle_counts)
 }

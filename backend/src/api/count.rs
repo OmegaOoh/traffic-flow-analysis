@@ -1,4 +1,4 @@
-use rocket::serde::{self, json::Json, Deserialize, Serialize};
+use rocket::serde::{json::Json, Deserialize, Serialize};
 use rocket::http::Status;
 use rocket_okapi::openapi;
 use schemars::JsonSchema;
@@ -52,7 +52,7 @@ pub fn get_count(vehicle_type: &str, count_request: Json<CountRequestBody> ) -> 
         Err(_) => return Err(Status::InternalServerError),
     };
 
-    Ok(serde::json::Json(Count {
+    Ok(Json(Count {
         count: prediction,
         vehicle_type: vtype,
     }))
@@ -73,7 +73,7 @@ pub fn get_count_all(count_request: Json<CountRequestBody> ) -> Result<Json<Coun
         Err(_) => return Err(Status::InternalServerError),
     };
 
-    Ok(serde::json::Json(Count {
+    Ok(Json(Count {
         count: prediction,
         vehicle_type: "Motorcycle, Car, HeavyVehicle".to_string(),
     }))
