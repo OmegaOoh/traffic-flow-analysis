@@ -96,6 +96,22 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     if !test_status.success() {
         panic!("API tests failed");
     }
+    
+    // Frontend Testing
+    println!("Starting Frontend Testing...");
+    let mut frontend_test_cmd = match Command::new("bun")
+        .current_dir("../frontend")
+        .arg("test")
+        .spawn()
+    {
+        Ok(cmd) => cmd,
+        Err(err) => panic!("Failed to spawn frontend test command: {}", err),
+    };
+    let frontend_test_status = frontend_test_cmd.wait().unwrap();
+    if !frontend_test_status.success() {
+        panic!("Frontend tests failed");
+    }
+    
     println!("Exiting Process...");
 
     Ok(())
