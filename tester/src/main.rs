@@ -1,5 +1,6 @@
 mod test_count;
 mod test_flow;
+mod test_desc;
 
 use std::process::{Child, Command, Stdio};
 use std::time::Duration;
@@ -67,7 +68,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     const POLL_INTERVAL: Duration = Duration::from_millis(2500);
 
     let _server_guard = 'waiting: loop {
-        match client.get(check_url.clone()).send().await {
+        match client.get(&check_url).send().await {
             Ok(_) => {
                 println!("Backend server is ready!");
                 break 'waiting ServerGuard(Some(cmd));
@@ -96,24 +97,23 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     if !test_status.success() {
         panic!("API tests failed");
     }
+    
+    // Frontend Testing
+    println!("Starting Frontend Testing...");
+    let mut frontend_test_cmd = match Command::new("bun")
+        .current_dir("../frontend")
+        .arg("test")
+        .spawn()
+    {
+        Ok(cmd) => cmd,
+        Err(err) => panic!("Failed to spawn frontend test command: {}", err),
+    };
+    let frontend_test_status = frontend_test_cmd.wait().unwrap();
+    if !frontend_test_status.success() {
+        panic!("Frontend tests failed");
+    }
+    
     println!("Exiting Process...");
 
     Ok(())
-}
-
-#[cfg(test)]
-mod tests {
-    use tokio;
-    use reqwest;
-    use dotenv::dotenv;
-    use std::env::var as env_var;
-
-    #[tokio::test]
-    async fn alive_api_test() { // This just checks if the server is alive
-        dotenv().ok();
-        let endpoint: String = env_var("ENDPOINT").expect("ENDPOINT not found");
-        let client = reqwest::Client::new();
-        let response = client.get(endpoint.clone() + "/alive").send().await.unwrap();
-        assert!(response.status().is_success(), "Server is not running!");
-    }
 }
