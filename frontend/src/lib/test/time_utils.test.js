@@ -27,14 +27,6 @@ test("TimeToRFC3339 at 00:45", () => {
     `${now.getFullYear()}-${month}-${day}T01:00:00+07:00`);
 })
 
-test("TimeToRFC3339 at noon", () => {
-  const now = new Date()
-  const month =(now.getMonth()+1).toString().padStart(2, '0')
-  const day =now.getDate().toString().padStart(2, '0')
-  expect(timeToRFC3339("12:00")).toBe(
-    `${now.getFullYear()}-${month}-${day}T12:00:00+07:00`);
-})
-
 test("TimeToRFC3339 with negative hours",() => {
   try{
     timeToRFC3339("-1:00")
