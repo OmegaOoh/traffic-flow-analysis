@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import apiClient from '@/axios'
-import { onMounted, ref, } from 'vue'
+import { onMounted, watch, ref, } from 'vue'
 import { generateColors} from '@/lib/color_generation';
 import { Line } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale } from 'chart.js'
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale)
+
+const props = defineProps({
+  day_of_week: Number,
+})
 
 const trafficFlowData = ref({
   labels: ["Loading..."],
@@ -56,13 +60,19 @@ const trafficFlowChartOptions = ref({
   }
 })
 
-onMounted(() => {
-  getFlowData()
-})
+watch(() => props.day_of_week, (newValue, oldValue) => {
+  if (newValue != oldValue) {
+    getFlowData()
+  }
+}, {immediate: true})
 
 async function getFlowData() {
   try {
-    const response = await apiClient.get('/desc/flow')
+    let api_endpoint = '/desc/flow'
+    if (props.day_of_week != 999) {
+      api_endpoint += `?day_of_week=${props.day_of_week}`
+    }
+    const response = await apiClient.get(api_endpoint)
     const responseData = response.data
     const lab = [];
     const dataPoints = [];

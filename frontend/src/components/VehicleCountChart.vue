@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import apiClient from '@/axios'
-import { onMounted, ref } from 'vue'
+import { watch, ref } from 'vue'
 import { generateColors} from '@/lib/color_generation';
 import { Line } from 'vue-chartjs'
-import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale } from 'chart.js' // Import CategoryScale and LinearScale
+import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale } from 'chart.js'
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale)
+
+const props = defineProps({
+  day_of_week: Number,
+});
 
 const vehicleCountData = ref({
   labels: ["Loading..."],
@@ -56,13 +60,19 @@ const vehicleCountChartOptions = ref({
   }
 })
 
-onMounted(() => {
-  getFlowData()
-})
+watch(() => props.day_of_week, (newValue, oldValue) => {
+  if (newValue != oldValue) {
+    getCountData()
+  }
+}, {immediate: true})
 
-async function getFlowData() {
+async function getCountData() {
   try {
-    const response = await apiClient.get('/desc/vehicle')
+    let api_endpoint = '/desc/vehicle'
+    if (props.day_of_week != 999) {
+      api_endpoint += `?day_of_week=${props.day_of_week}`
+    }
+    const response = await apiClient.get(api_endpoint)
     const responseData = response.data
     const lab = [];
     const mDataPoints = [];
