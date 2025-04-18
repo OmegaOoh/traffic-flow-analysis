@@ -21,7 +21,7 @@ static MODELS_PATH: LazyLock<PathBuf> = LazyLock::new(|| {
     env::current_dir().unwrap().join("src").join("pytorch_models")
 });
 
-pub(crate) fn model_inference(model: &LazyLock<CModule>,time: DateTime<FixedOffset>, weather: String) -> Result<f64, String> {
+fn model_inference(model: &LazyLock<CModule>,time: DateTime<FixedOffset>, weather: String) -> Result<f64, String> {
     let (hour, weather_code) = match pre_process(time, weather.clone()) {
         Ok(r) => r,
         Err(e) => return Err(e)
