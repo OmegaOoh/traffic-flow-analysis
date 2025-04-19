@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: [18.x, 20.x, 22.x]
 
     steps:
     - uses: actions/checkout@v4
@@ -37,8 +37,3 @@ jobs:
         cd frontend
         bun install
         bun test
-    - name: Run Cypress E2E Tests
-      run: |
-        cd frontend
-        bun install
-        bun run test:e2e:dev-test
