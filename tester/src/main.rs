@@ -100,13 +100,41 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     
     // Frontend Testing
     println!("Starting Frontend Testing...");
-    let mut frontend_test_cmd = match Command::new("bun")
+    
+    let js_package_manager = env_var("JS_PACKAGE_MANAGER").unwrap_or_else(
+        |_| {
+            println!("JS_PACKAGE_MANAGER environment variable not set, defaulting to `bun`");
+            "bun".to_string()
+        }
+    );
+    
+    let (cmd_exe, cmd_args) = match js_package_manager.as_str() {
+        "bun" => ("bun", vec!["test"]),
+        "npm" => ("npm", vec!["test"]),
+        "yarn" => ("yarn", vec!["test"]),
+        _ => {eprintln!("Warning: Unknown JS_PACKAGE_MANAGER '{}'. Defaulting to 'bun'.", js_package_manager);
+              ("bun", vec!["test"])}
+    };
+    
+    println!("Using package manager: {} to run frontend tests", cmd_exe);
+    
+    let mut frontend_install_cmd = match Command::new(cmd_exe).current_dir("../frontend").arg("install").spawn() {
+        Ok(cmd) => cmd,
+        Err(err) => panic!("Failed to spawn frontend install command '{}': {}", cmd_exe, err),
+    };
+    
+    let frontend_install_status = frontend_install_cmd.wait().unwrap();
+    if !frontend_install_status.success() {
+        panic!("Frontend installation failed");
+    }
+    
+    let mut frontend_test_cmd = match Command::new(cmd_exe)
         .current_dir("../frontend")
-        .arg("test")
+        .args(cmd_args)
         .spawn()
     {
         Ok(cmd) => cmd,
-        Err(err) => panic!("Failed to spawn frontend test command: {}", err),
+        Err(err) => panic!("Failed to spawn frontend test command '{}': {}", cmd_exe, err),
     };
     let frontend_test_status = frontend_test_cmd.wait().unwrap();
     if !frontend_test_status.success() {

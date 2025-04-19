@@ -3,12 +3,13 @@
 ## Setup Tester environment (.env)
 1. Copy `sample.env` to `.env`.
 2. Edit ENDPOINT in `.env` to match your configuration, ENDPOINT should be a valid URL to the exact path of the traffic flow analysis API ENDPOINT. 
+3. Edit JS_PACKAGE_MANAGER in `.env` to match your configuration, only `npm`, `yarn`, and `bun` are supported.
 
 ## Features
 
 - Run Backend Unit Tests
 - Test API Endpoints
-- Run Frontend Unit Tests (If bun is not installed this will not be run successfully and will result in an error)
+- Run Frontend Unit Tests
 
 ## Running the Tester
 
