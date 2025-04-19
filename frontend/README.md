@@ -85,11 +85,11 @@ bun test:e2e
 To run the unit tests:
 
 ```sh
-npm run test:unit
+npm run test
 ```
 
 ```sh
-yarn test:unit
+yarn test
 ```
 
 ```sh
