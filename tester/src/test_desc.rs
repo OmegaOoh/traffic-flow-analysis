@@ -32,17 +32,7 @@ mod test {
         Ok(())
     }
     
-    #[tokio::test]
-    async fn test_get_flow_data() -> Result<(), reqwest::Error> {
-        dotenv().ok();
-        let endpoint: String = env_var("ENDPOINT").expect("ENDPOINT not found");
-        let client = reqwest::Client::new();
-        let url = format!("{}/desc/flow", endpoint);
-        
-        let response = client.get(url).send().await?;
-        
-        assert_eq!(response.status(), StatusCode::OK);
-        let body_json: Value = response.json().await?;
+    fn assert_flow_data(body_json: Value) {
         assert!(body_json.is_array());
         assert!(body_json.as_array().unwrap().len() > 0);
         assert!(body_json.as_array().unwrap()[0].is_object());
@@ -54,21 +44,85 @@ mod test {
         assert!(body_json.as_array().unwrap()[0].as_object().unwrap().contains_key("speed"));
         assert!(body_json.as_array().unwrap()[0].as_object().unwrap().get("speed").is_some());
         assert!(body_json.as_array().unwrap()[0].as_object().unwrap().get("speed").unwrap().is_number());    
-        
-        Ok(())
     }
     
     #[tokio::test]
-    async fn test_get_vehicle_data() -> Result<(), reqwest::Error> {
+    async fn test_get_flow_data() -> Result<(), reqwest::Error> {
         dotenv().ok();
         let endpoint: String = env_var("ENDPOINT").expect("ENDPOINT not found");
         let client = reqwest::Client::new();
-        let url = format!("{}/desc/vehicle", endpoint);
+        let url = format!("{}/desc/flow", endpoint);
         
         let response = client.get(url).send().await?;
         
         assert_eq!(response.status(), StatusCode::OK);
         let body_json: Value = response.json().await?;
+        assert_flow_data(body_json); 
+        
+        Ok(())
+    }
+    
+    #[tokio::test]
+    async fn test_get_flow_data_dayofweek_1() -> Result<(), reqwest::Error> {
+        dotenv().ok();
+        let endpoint: String = env_var("ENDPOINT").expect("ENDPOINT not found");
+        let client = reqwest::Client::new();
+        let url = format!("{}/desc/flow?day_of_week=1", endpoint);
+        
+        let response = client.get(url).send().await?;
+        
+        assert_eq!(response.status(), StatusCode::OK);
+        let body_json: Value = response.json().await?;
+        assert_flow_data(body_json);
+        
+        Ok(())
+    }
+    
+    #[tokio::test]
+    async fn test_get_flow_data_dayofweek_7() -> Result<(), reqwest::Error> {
+        dotenv().ok();
+        let endpoint: String = env_var("ENDPOINT").expect("ENDPOINT not found");
+        let client = reqwest::Client::new();
+        let url = format!("{}/desc/flow?day_of_week=7", endpoint);
+        
+        let response = client.get(url).send().await?;
+        
+        assert_eq!(response.status(), StatusCode::OK);
+        let body_json: Value = response.json().await?;
+        assert_flow_data(body_json);
+        
+        Ok(())
+    }
+    
+    #[tokio::test]
+    async fn test_get_flow_data_dayofweek_0() -> Result<(), reqwest::Error> {
+        dotenv().ok();
+        let endpoint: String = env_var("ENDPOINT").expect("ENDPOINT not found");
+        let client = reqwest::Client::new();
+        let url = format!("{}/desc/flow?day_of_week=0", endpoint);
+        
+        let response = client.get(url).send().await?;
+        
+        assert_eq!(response.status(), StatusCode::BAD_REQUEST);
+        
+        Ok(())
+    }
+    
+    #[tokio::test]
+    async fn test_get_flow_data_dayofweek_8() -> Result<(), reqwest::Error> {
+        dotenv().ok();
+        let endpoint: String = env_var("ENDPOINT").expect("ENDPOINT not found");
+        let client = reqwest::Client::new();
+        let url = format!("{}/desc/flow?day_of_week=8", endpoint);
+        
+        let response = client.get(url).send().await?;
+        
+        assert_eq!(response.status(), StatusCode::BAD_REQUEST);
+        
+        Ok(())
+    }
+    
+    fn assert_vehicle_data(body_json: Value) {
         assert!(body_json.is_array());
         assert!(body_json.as_array().unwrap().len() > 0);
         assert!(body_json.as_array().unwrap()[0].is_object());
@@ -88,6 +142,80 @@ mod test {
         assert!(body_json.as_array().unwrap()[0].as_object().unwrap().contains_key("count_h"));
         assert!(body_json.as_array().unwrap()[0].as_object().unwrap().get("count_h").is_some());
         assert!(body_json.as_array().unwrap()[0].as_object().unwrap().get("count_h").unwrap().is_number());
+    }
+    
+    #[tokio::test]
+    async fn test_get_vehicle_data() -> Result<(), reqwest::Error> {
+        dotenv().ok();
+        let endpoint: String = env_var("ENDPOINT").expect("ENDPOINT not found");
+        let client = reqwest::Client::new();
+        let url = format!("{}/desc/vehicle", endpoint);
+        
+        let response = client.get(url).send().await?;
+        
+        assert_eq!(response.status(), StatusCode::OK);
+        let body_json: Value = response.json().await?;
+        assert_vehicle_data(body_json);
+        
+        Ok(())
+    }
+    
+    #[tokio::test]
+    async fn test_get_vehicle_data_day_of_week_1() -> Result<(), reqwest::Error> {
+        dotenv().ok();
+        let endpoint: String = env_var("ENDPOINT").expect("ENDPOINT not found");
+        let client = reqwest::Client::new();
+        let url = format!("{}/desc/vehicle?day_of_week=1", endpoint);
+        
+        let response = client.get(url).send().await?;
+        
+        assert_eq!(response.status(), StatusCode::OK);
+        let body_json: Value = response.json().await?;
+        assert_vehicle_data(body_json);
+        Ok(())
+    }
+    
+    #[tokio::test]
+    async fn test_get_vehicle_data_day_of_week_7() -> Result<(), reqwest::Error> {
+        dotenv().ok();
+        let endpoint: String = env_var("ENDPOINT").expect("ENDPOINT not found");
+        let client = reqwest::Client::new();
+        let url = format!("{}/desc/vehicle?day_of_week=7", endpoint);
+        
+        let response = client.get(url).send().await?;
+        
+        assert_eq!(response.status(), StatusCode::OK);
+        let body_json: Value = response.json().await?;
+        assert_vehicle_data(body_json);
+        
+        Ok(())
+    }
+    
+    #[tokio::test]
+    async fn test_get_vehicle_data_day_of_week_0() -> Result<(), reqwest::Error> {
+        dotenv().ok();
+        let endpoint: String = env_var("ENDPOINT").expect("ENDPOINT not found");
+        let client = reqwest::Client::new();
+        let url = format!("{}/desc/vehicle?day_of_week=0", endpoint);
+        
+        let response = client.get(url).send().await?;
+        
+        assert_eq!(response.status(), StatusCode::BAD_REQUEST);
+        
+        Ok(())
+    }
+    
+    #[tokio::test]
+    async fn test_get_vehicle_data_day_of_week_8() -> Result<(), reqwest::Error> {
+        dotenv().ok();
+        let endpoint: String = env_var("ENDPOINT").expect("ENDPOINT not found");
+        let client = reqwest::Client::new();
+        let url = format!("{}/desc/vehicle?day_of_week=8", endpoint);
+        
+        let response = client.get(url).send().await?;
+        
+        assert_eq!(response.status(), StatusCode::BAD_REQUEST);
+        
         
         Ok(())
     }
