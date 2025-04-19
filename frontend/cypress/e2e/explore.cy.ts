@@ -80,7 +80,7 @@ describe("Explore Page Testing", () => {
     });
   })
   
-  it('Verify that the API endpoint is properly configured when the user submits the exploration form', () => {
+  it('Verify that predicted vehicle count is displayed', () => {
     const currentTime = new Date(2025, 0, 1, 1, 1, 0);
     cy.clock(currentTime.getTime());
     

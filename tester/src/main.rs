@@ -100,9 +100,39 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     
     // Frontend Testing
     println!("Starting Frontend Testing...");
+
+    
+    let mut frontend_install_cmd = match Command::new("bun")
+        .current_dir("../frontend")
+        .arg("install")
+        .spawn()
+    {
+        Ok(cmd) => cmd,
+        Err(err) => panic!("Failed to spawn frontend install command: {}", err),
+    };
+    
+    let frontend_install_status = frontend_install_cmd.wait().unwrap();
+    if !frontend_install_status.success() {
+        panic!("Frontend installation failed");
+    }
+    
+    let mut frontend_prep_cmd = match Command::new("bun")
+        .current_dir("../frontend")
+        .arg("prepare")
+        .spawn()
+    {
+        Ok(cmd) => cmd,
+        Err(err) => panic!("Failed to spawn frontend install command: {}", err),
+    };
+    
+    let frontend_prep_status = frontend_prep_cmd.wait().unwrap();
+    if !frontend_prep_status.success() {
+        panic!("Frontend test prepare failed");
+    }
+    
     let mut frontend_test_cmd = match Command::new("bun")
         .current_dir("../frontend")
-        .arg("test")
+        .args(vec!["test"])
         .spawn()
     {
         Ok(cmd) => cmd,
@@ -111,6 +141,19 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let frontend_test_status = frontend_test_cmd.wait().unwrap();
     if !frontend_test_status.success() {
         panic!("Frontend tests failed");
+    }
+    
+    let mut frontend_e2e_cmd = match Command::new("bun")
+        .current_dir("../frontend")
+        .args(vec!["test:e2e:dev-test"])
+        .spawn()
+    {
+        Ok(cmd) => cmd,
+        Err(err) => panic!("Failed to spawn frontend E2E test command: {}", err),
+    };
+    let frontend_e2e_status = frontend_e2e_cmd.wait().unwrap();
+    if !frontend_e2e_status.success() {
+        panic!("Frontend E2E tests failed");
     }
     
     println!("Exiting Process...");
