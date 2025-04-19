@@ -1,62 +1,95 @@
 # Traffic Flow Analysis Frontend
 
+This is the frontend repository for the Traffic Flow Analysis project, built with Vue.js and Vite.
 
 ## Project Setup
-- Install dependencies
->>>>>>> main
+
+**Node.JS is required to run the application.**
+
+1.  **Install Dependencies:**
+    Navigate to the project root directory in your terminal and run:
+    
+    ```sh
+    npm install
+    ```
+    
+    ```sh
+    yarn install
+    ```
+    
+    ```sh
+    bun install
+    ```
+
+2.  **Environment Configuration:**
+    Create a `.env` file in the project root by copying the provided `sample.env`.
+    ```sh
+    cp sample.env .env
+    ```
+    Open the newly created `.env` file and set the `VUE_APP_BASE_URL` variable to the URL of your backend API.
+
+## Development
+
+### Run Development Server
+
+To compile and hot-reload the application for development:
+
 ```sh
-bun install
+npm run dev
 ```
 
-<<<<<<< HEAD
-### Compile and Hot-Reload for Development
-
 ```sh
-bun dev
-```
-=======
-- Create .env file by copy sample.env into `.env` and set `VUE_APP_BASE_URL` into your backend Url
->>>>>>> main
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-bun run build
+yarn dev
 ```
 
-<<<<<<< HEAD
-=======
-### Run Project (DEV)
 ```sh
 bun run dev
 ```
 
+### Build for Production
 
->>>>>>> main
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-bun test:unit
-```
-
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
+To build the application for production:
 
 ```sh
-bun test:e2e:dev
+npm run build
 ```
 
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
-
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
+```sh
+yarn build
+```
 
 ```sh
 bun run build
+```
+
+### Run Cypress Tests
+
+To run the Cypress tests:
+
+```sh
+npm run test:e2e
+```
+
+```sh
+yarn test:e2e
+```
+
+```sh
 bun test:e2e
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### Run Unit Tests
+
+To run the unit tests:
 
 ```sh
-bun lint
+npm run test:unit
+```
+
+```sh
+yarn test:unit
+```
+
+```sh
+bun test
 ```
