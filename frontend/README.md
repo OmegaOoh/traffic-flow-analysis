@@ -1,6 +1,8 @@
 # Traffic Flow Analysis Frontend
 
-This is the frontend repository for the Traffic Flow Analysis project, built with Vue.js and Vite.
+[![Frontend Unit Test](https://github.com/OmegaOoh/traffic-flow-analysis/actions/workflows/node_frontend_unit_test.yml/badge.svg)](https://github.com/OmegaOoh/traffic-flow-analysis/actions/workflows/node_frontend_unit_test.yml)
+
+This is the frontend repository for the Traffic Flow Analysis project, built with Vue.js.
 
 ## Project Setup
 
