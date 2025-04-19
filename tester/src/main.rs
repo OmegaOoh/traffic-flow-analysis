@@ -108,12 +108,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     );
     
-    let (cmd_exe, cmd_args) = match js_package_manager.as_str() {
-        "bun" => ("bun", vec!["test"]),
-        "npm" => ("npm", vec!["test"]),
-        "yarn" => ("yarn", vec!["test"]),
+    
+    // Match the package manager and set the command executable to validate the package manager
+    let cmd_exe = match js_package_manager.as_str() {
+        "bun" => "bun",
+        "npm" => "npm",
+        "yarn" => "yarn",
+        "pnpm" => "pnpm",
         _ => {eprintln!("Warning: Unknown JS_PACKAGE_MANAGER '{}'. Defaulting to 'bun'.", js_package_manager);
-              ("bun", vec!["test"])}
+              "bun"}
     };
     
     println!("Using package manager: {} to run frontend tests", cmd_exe);
@@ -130,7 +133,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     
     let mut frontend_test_cmd = match Command::new(cmd_exe)
         .current_dir("../frontend")
-        .args(cmd_args)
+        .args(vec!["test"])
         .spawn()
     {
         Ok(cmd) => cmd,
@@ -139,6 +142,19 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let frontend_test_status = frontend_test_cmd.wait().unwrap();
     if !frontend_test_status.success() {
         panic!("Frontend tests failed");
+    }
+    
+    let mut frontend_e2e_cmd = match Command::new(cmd_exe)
+        .current_dir("../frontend")
+        .args(vec!["test:e2e:dev-test"])
+        .spawn()
+    {
+        Ok(cmd) => cmd,
+        Err(err) => panic!("Failed to spawn frontend E2E test command '{}': {}", cmd_exe, err),
+    };
+    let frontend_e2e_status = frontend_e2e_cmd.wait().unwrap();
+    if !frontend_e2e_status.success() {
+        panic!("Frontend E2E tests failed");
     }
     
     println!("Exiting Process...");
