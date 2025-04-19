@@ -3,7 +3,6 @@
 ## Setup Tester environment (.env)
 1. Copy `sample.env` to `.env`.
 2. Edit ENDPOINT in `.env` to match your configuration, ENDPOINT should be a valid URL to the exact path of the traffic flow analysis API ENDPOINT. 
-3. Edit JS_PACKAGE_MANAGER in `.env` to match your configuration, only `npm`,`pnpm`, `yarn`, and `bun` are supported.
 
 ## Features
 
