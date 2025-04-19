@@ -64,20 +64,20 @@ yarn build
 bun run build
 ```
 
-### Run Cypress Tests
+### Run Cypress E2E Tests
 
-To run the Cypress tests:
+To run the Cypress E2E tests:
 
 ```sh
-npm run test:e2e
+npm run test:e2e:dev-test
 ```
 
 ```sh
-yarn test:e2e
+yarn test:e2e:dev-test
 ```
 
 ```sh
-bun test:e2e
+bun test:e2e:dev-test
 ```
 
 ### Run Unit Tests

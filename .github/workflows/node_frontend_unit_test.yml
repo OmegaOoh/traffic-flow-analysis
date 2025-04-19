@@ -37,3 +37,8 @@ jobs:
         cd frontend
         bun install
         bun test
+    - name: Run Cypress E2E Tests
+      run: |
+        cd frontend
+        bun install
+        bun run test:e2e:dev-test
