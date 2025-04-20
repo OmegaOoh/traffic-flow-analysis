@@ -31,7 +31,7 @@
     <!-- ResultCard -->
     <div
       :class="
-        'w-1/2 h-full min-h-[fit-content] rounded-lg p-4 mx-10 shadow-lg shadow-black text-primary transition-transform duration-100 hover:scale-110 ' +
+        'w-1/2 h-full min-h-[fit-content] rounded-lg p-4 mx-10 shadow-lg shadow-black text-primary ' +
         bgClass
       "
     >
