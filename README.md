@@ -2,7 +2,7 @@
 [![Rust Unit Test Backend](https://github.com/OmegaOoh/traffic-flow-analysis/actions/workflows/rust_unit_test_backend.yml/badge.svg)](https://github.com/OmegaOoh/traffic-flow-analysis/actions/workflows/rust_unit_test_backend.yml)
 [![Frontend Unit Test](https://github.com/OmegaOoh/traffic-flow-analysis/actions/workflows/node_frontend_unit_test.yml/badge.svg)](https://github.com/OmegaOoh/traffic-flow-analysis/actions/workflows/node_frontend_unit_test.yml)
 
-Simple API web application providing data about traffic flow, built with a Rust backend (Rocket) and a Vue.js/Vite frontend.
+A simple API web application providing data about traffic flow is built with a Rust backend (Rocket) and a Vue.js/Vite frontend.
 
 ## Prerequisites
 
@@ -90,14 +90,13 @@ To run the full application, you need to start both the backend and the frontend
     ```
     (Or `yarn run dev` / `bun run dev`)
 
-The backend API should now be running (defaulting to `http://localhost:8000`) and the frontend development server should be running (defaulting to `http://localhost:5173` for Vite).
+The backend API should now be running (defaulting to `http://localhost:8000`), and the frontend development server should be running (defaulting to `http://localhost:5173` for Vite development build).
 
 ## Prediction Model
 
 The backend includes a prediction model based on PyTorch/LibTorch.
 
-* The model may not be highly accurate due to limitations in training data or traffic complexity. It's intended to provide a general idea of patterns.
+* The model may not be highly accurate due to limitations in training data. It's intended to provide a general idea of patterns.
+* The model provided is trained based on our collected data. To make the prediction accurate to your data, please train a new model using the  Jupyter notebook provided in `notebook.zip`
 * The model is loaded from files within the `/backend/src/pytorch_models/` directory.
 * You can train a new model using PyTorch and replace the files in that directory.
-
-*Note: A Jupyter Notebook used for training the model will be provided in the repository for reference.*
