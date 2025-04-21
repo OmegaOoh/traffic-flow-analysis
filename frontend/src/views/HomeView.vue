@@ -3,6 +3,7 @@ import {ref} from 'vue';
 import WeatherPie from "@/components/WeatherPieChart.vue"
 import TrafficLine from "@/components/TrafficFlowSpeedChart.vue"
 import VehicleLine from "@/components/VehicleCountChart.vue"
+import PredictionChart from "@/components/PredictionCharts.vue"
 
 const dayOfWeek = ref(999);
 </script>
@@ -12,6 +13,9 @@ const dayOfWeek = ref(999);
     <div class="flex flex-col items-center justify-center h-full">
       <h1 class="text-4xl font-bold mb-4">Welcome to Traffic Flow Analysis</h1>
       <p class="text-center">Explore the traffic flow data</p>
+    </div>
+    <div>
+      <PredictionChart/>
     </div>
     <div class="md:grid md:grid-cols-2 gap-4">
       <div class="m-auto">

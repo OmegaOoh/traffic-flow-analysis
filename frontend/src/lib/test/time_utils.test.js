@@ -1,6 +1,5 @@
 import { test, expect } from 'vitest';
 import { generateTimeOptions, timeToRFC3339 } from "../time_utils"
-import { randomInt } from 'node:crypto';
 
 test("generateTimeOptions", () => {
   const generatedOptions = generateTimeOptions();
