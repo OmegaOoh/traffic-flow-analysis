@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import apiClient from '@/axios'
-import { onMounted, watch, ref, } from 'vue'
+import { watch, ref, } from 'vue'
 import { generateColors} from '@/lib/color_generation';
 import { Line } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale } from 'chart.js'
@@ -40,6 +40,7 @@ const trafficFlowChartOptions = ref({
         text: 'Speed (mph)',
         color: 'white',
       },
+      beginAtZero: true
     },
   },
   plugins: {
@@ -59,6 +60,8 @@ const trafficFlowChartOptions = ref({
     }
   }
 })
+
+
 
 watch(() => props.day_of_week, (newValue, oldValue) => {
   if (newValue != oldValue) {

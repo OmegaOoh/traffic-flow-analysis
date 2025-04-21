@@ -4,6 +4,8 @@
 
 This is the frontend repository for the Traffic Flow Analysis project, built with Vue.js.
 
+This project use [open meteo](https://open-meteo.com) to fetch forecast weather data.
+
 ## Project Setup
 
 **Node.JS is required to run the application.**
@@ -28,7 +30,9 @@ This is the frontend repository for the Traffic Flow Analysis project, built wit
     ```sh
     cp sample.env .env
     ```
-    Open the newly created `.env` file and set the `VUE_APP_BASE_URL` variable to the URL of your backend API.
+    Open the newly created `.env` file and set the `VITE_APP_BASE_URL` variable to the URL of your backend API.
+    
+    * Optional: set `VITE_APP_LAT` and `VITE_APP_LON` to match your (the sample latitude and longitude is at Kastsart University).
 
 ## Development
 

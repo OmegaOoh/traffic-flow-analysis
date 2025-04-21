@@ -65,6 +65,9 @@ The project requires a MySQL database with the following tables and columns:
     ```
 3.  **Edit `.env`:**
     Open the newly created `.env` file and change `VITE_APP_ENDPOINT` to be your **backend** URL, including the path to the API endpoint. The default path is `/api/v2`. Example: `VITE_APP_ENDPOINT=http://localhost:8000/api/v2`.
+    
+    * Optional: set `VITE_APP_LAT` and `VITE_APP_LON` to match your (the sample latitude and longitude is at Kastsart University).
+    
 4.  **Install Dependencies:**
     Install the frontend dependencies using your preferred package manager:
     ```sh
