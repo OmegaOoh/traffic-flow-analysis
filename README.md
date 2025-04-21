@@ -96,7 +96,11 @@ The backend API should now be running (defaulting to `http://localhost:8000`), a
 
 The backend includes a prediction model based on PyTorch/LibTorch.
 
-* The model may not be highly accurate due to limitations in training data. It's intended to provide a general idea of patterns.
-* The model provided is trained based on our collected data. To make the prediction accurate to your data, please train a new model using the  Jupyter notebook provided in `notebook.zip`
+The prediction model is used to forecast traffic flow based on historical data and weather conditions.
+
+* The model provided in project repository is trained based on our collected data, and **does not update automatically**, Please train new model to have the prediction based on your data.
+* The model may have varying accuracy depending on the training data size and traffic conditions.
 * The model is loaded from files within the `/backend/src/pytorch_models/` directory.
-* You can train a new model using PyTorch and replace the files in that directory.
+* The model can be trained using PyTorch. You can train a new model and replace the files in the specified directory.
+
+*Note: A Jupyter Notebook used for training the model is provided in the root directory of the project in `notebook.zip`.*
