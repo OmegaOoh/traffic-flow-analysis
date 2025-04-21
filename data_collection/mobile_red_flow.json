@@ -1,0 +1,635 @@
+[
+  {
+    "id": "445883bf0ebce5fe",
+    "type": "tab",
+    "label": "Flow 1",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "1e3ce3da4949f5e3",
+    "type": "image",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "width": 160,
+    "data": "payload",
+    "dataType": "msg",
+    "thumbnail": false,
+    "active": true,
+    "pass": false,
+    "outputs": 0,
+    "x": 1300,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "f23d19f493e2d5d6",
+    "type": "switch",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "property": "payload",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "eq",
+        "v": "capture",
+        "vt": "str"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 410,
+    "y": 220,
+    "wires": [
+      [
+        "2f2a49ad0378b0b5"
+      ]
+    ]
+  },
+  {
+    "id": "5f4df565e297e5b4",
+    "type": "camera-open",
+    "z": "445883bf0ebce5fe",
+    "direction": "back",
+    "name": "",
+    "preview": "enable",
+    "x": 480,
+    "y": 580,
+    "wires": [
+      [
+        "c9a5e6a56975c587"
+      ]
+    ]
+  },
+  {
+    "id": "fa3b19156aa31b53",
+    "type": "take-picture",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "x": 830,
+    "y": 580,
+    "wires": [
+      [
+        "9a0c5a393b93c6f0",
+        "09baba682ff86d34"
+      ]
+    ]
+  },
+  {
+    "id": "9a0c5a393b93c6f0",
+    "type": "camera-close",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "x": 1080,
+    "y": 580,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "09baba682ff86d34",
+    "type": "function",
+    "z": "445883bf0ebce5fe",
+    "name": "encode image",
+    "func": "let dataURI = msg.payload;\nlet base64Data = dataURI.split(',')[1]; // Split at the comma and get the second part\nmsg.payload = base64Data;\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 840,
+    "y": 660,
+    "wires": [
+      [
+        "6283200da8fa6960"
+      ]
+    ]
+  },
+  {
+    "id": "61a4ec7ecb5d8d56",
+    "type": "ui_button",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "group": "b799047546ede846",
+    "order": 0,
+    "width": 0,
+    "height": 0,
+    "passthru": false,
+    "label": "Manual Capture",
+    "tooltip": "",
+    "color": "",
+    "bgcolor": "",
+    "className": "",
+    "icon": "",
+    "payload": "",
+    "payloadType": "str",
+    "topic": "topic",
+    "topicType": "msg",
+    "x": 280,
+    "y": 580,
+    "wires": [
+      [
+        "5f4df565e297e5b4"
+      ]
+    ]
+  },
+  {
+    "id": "2f2a49ad0378b0b5",
+    "type": "function",
+    "z": "445883bf0ebce5fe",
+    "name": "Nearest TIme",
+    "func": "function calculateNearest30Or00Delay() {\n    const now = new Date();\n\n    const currentMinutes = now.getMinutes();\n    const currentSeconds = now.getSeconds();\n    const currentMilliseconds = now.getMilliseconds();\n\n    let delayMilliseconds;\n\n    if (currentMinutes < 30) {\n        delayMilliseconds =\n            (30 - currentMinutes) * 60 * 1000 -\n            currentSeconds * 1000 -\n            currentMilliseconds;\n    } else {\n        delayMilliseconds =\n            (60 - currentMinutes) * 60 * 1000 -\n            currentSeconds * 1000 -\n            currentMilliseconds;\n    }\n\n    return delayMilliseconds;\n}\n\nmsg.delay = calculateNearest30Or00Delay();\n\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 440,
+    "y": 260,
+    "wires": [
+      [
+        "f4672453c734f88f",
+        "a5e822c8ca66583b"
+      ]
+    ]
+  },
+  {
+    "id": "f4672453c734f88f",
+    "type": "delay",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "pauseType": "delayv",
+    "timeout": "30",
+    "timeoutUnits": "minutes",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "allowrate": false,
+    "outputs": 1,
+    "x": 420,
+    "y": 320,
+    "wires": [
+      [
+        "8d96da5375d8a871"
+      ]
+    ]
+  },
+  {
+    "id": "a5e822c8ca66583b",
+    "type": "debug",
+    "z": "445883bf0ebce5fe",
+    "name": "debug 1",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "delay",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 660,
+    "y": 260,
+    "wires": []
+  },
+  {
+    "id": "3054848270bbe4df",
+    "type": "inject",
+    "z": "445883bf0ebce5fe",
+    "name": "Starter",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "capture",
+    "payloadType": "str",
+    "x": 230,
+    "y": 220,
+    "wires": [
+      [
+        "f23d19f493e2d5d6"
+      ]
+    ]
+  },
+  {
+    "id": "6283200da8fa6960",
+    "type": "json",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "property": "payload",
+    "action": "str",
+    "pretty": false,
+    "x": 810,
+    "y": 740,
+    "wires": [
+      [
+        "8bf81f4b7f849b1a"
+      ]
+    ]
+  },
+  {
+    "id": "8bf81f4b7f849b1a",
+    "type": "function",
+    "z": "445883bf0ebce5fe",
+    "name": "jsonify",
+    "func": "let obj = new Object()\nobj.image = msg.payload\nmsg.payload = obj;\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 930,
+    "y": 740,
+    "wires": [
+      [
+        "c85d28fec8c09dc2"
+      ]
+    ]
+  },
+  {
+    "id": "c85d28fec8c09dc2",
+    "type": "mqtt out",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "topic": "<<MQTT_Topic>>",
+    "qos": "0",
+    "retain": "false",
+    "respTopic": "",
+    "contentType": "",
+    "userProps": "",
+    "correl": "",
+    "expiry": "",
+    "broker": "53cae16ea926c3b3",
+    "x": 1150,
+    "y": 740,
+    "wires": []
+  },
+  {
+    "id": "c9a5e6a56975c587",
+    "type": "delay",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "pauseType": "delay",
+    "timeout": "3",
+    "timeoutUnits": "seconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "allowrate": false,
+    "outputs": 1,
+    "x": 660,
+    "y": 580,
+    "wires": [
+      [
+        "fa3b19156aa31b53"
+      ]
+    ]
+  },
+  {
+    "id": "8d96da5375d8a871",
+    "type": "camera-open",
+    "z": "445883bf0ebce5fe",
+    "direction": "back",
+    "name": "",
+    "preview": "enable",
+    "x": 680,
+    "y": 300,
+    "wires": [
+      [
+        "3be7880f824fbb3c",
+        "fa921c09320faeb0"
+      ]
+    ]
+  },
+  {
+    "id": "8d2f903743a8b0de",
+    "type": "take-picture",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "x": 1030,
+    "y": 300,
+    "wires": [
+      [
+        "9287df84ce2190a1",
+        "88ee42c6a130e3e6"
+      ]
+    ]
+  },
+  {
+    "id": "9287df84ce2190a1",
+    "type": "camera-close",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "x": 1280,
+    "y": 300,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "88ee42c6a130e3e6",
+    "type": "function",
+    "z": "445883bf0ebce5fe",
+    "name": "encode image",
+    "func": "let dataURI = msg.payload;\nlet base64Data = dataURI.split(',')[1]; // Split at the comma and get the second part\nmsg.payload = base64Data;\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1040,
+    "y": 380,
+    "wires": [
+      [
+        "9a33d96fe92a33fc"
+      ]
+    ]
+  },
+  {
+    "id": "9a33d96fe92a33fc",
+    "type": "json",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "property": "payload",
+    "action": "str",
+    "pretty": false,
+    "x": 1010,
+    "y": 460,
+    "wires": [
+      [
+        "e2a071e9630c9c5b"
+      ]
+    ]
+  },
+  {
+    "id": "e2a071e9630c9c5b",
+    "type": "function",
+    "z": "445883bf0ebce5fe",
+    "name": "jsonify",
+    "func": "let obj = new Object()\nobj.image = msg.payload\nmsg.payload = obj;\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1130,
+    "y": 460,
+    "wires": [
+      [
+        "336a770242c45d28"
+      ]
+    ]
+  },
+  {
+    "id": "336a770242c45d28",
+    "type": "mqtt out",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "topic": "<<MQTT_Topic>>",
+    "qos": "0",
+    "retain": "false",
+    "respTopic": "",
+    "contentType": "",
+    "userProps": "",
+    "correl": "",
+    "expiry": "",
+    "broker": "53cae16ea926c3b3",
+    "x": 1350,
+    "y": 460,
+    "wires": []
+  },
+  {
+    "id": "3be7880f824fbb3c",
+    "type": "delay",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "pauseType": "delay",
+    "timeout": "3",
+    "timeoutUnits": "seconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "allowrate": false,
+    "outputs": 1,
+    "x": 860,
+    "y": 300,
+    "wires": [
+      [
+        "8d2f903743a8b0de"
+      ]
+    ]
+  },
+  {
+    "id": "fa921c09320faeb0",
+    "type": "delay",
+    "z": "445883bf0ebce5fe",
+    "name": "30 min Loop",
+    "pauseType": "delay",
+    "timeout": "30",
+    "timeoutUnits": "minutes",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "allowrate": false,
+    "outputs": 1,
+    "x": 690,
+    "y": 400,
+    "wires": [
+      [
+        "8d96da5375d8a871"
+      ]
+    ]
+  },
+  {
+    "id": "7cd871b8558aea36",
+    "type": "camera-open",
+    "z": "445883bf0ebce5fe",
+    "direction": "back",
+    "name": "",
+    "preview": "enable",
+    "x": 520,
+    "y": 920,
+    "wires": [
+      [
+        "fbf30e73d7f7b0f4"
+      ]
+    ]
+  },
+  {
+    "id": "e867934d77750f15",
+    "type": "take-picture",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "x": 870,
+    "y": 920,
+    "wires": [
+      [
+        "a19beee166adfc62",
+        "aadaeb9eac60037d"
+      ]
+    ]
+  },
+  {
+    "id": "a19beee166adfc62",
+    "type": "camera-close",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "x": 1120,
+    "y": 920,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "fbf30e73d7f7b0f4",
+    "type": "delay",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "pauseType": "delay",
+    "timeout": "3",
+    "timeoutUnits": "seconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "allowrate": false,
+    "outputs": 1,
+    "x": 700,
+    "y": 920,
+    "wires": [
+      [
+        "e867934d77750f15"
+      ]
+    ]
+  },
+  {
+    "id": "544ff7a9802da2de",
+    "type": "inject",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "",
+    "payloadType": "str",
+    "x": 310,
+    "y": 920,
+    "wires": [
+      [
+        "7cd871b8558aea36"
+      ]
+    ]
+  },
+  {
+    "id": "aadaeb9eac60037d",
+    "type": "image",
+    "z": "445883bf0ebce5fe",
+    "name": "",
+    "width": "900",
+    "data": "payload",
+    "dataType": "msg",
+    "thumbnail": false,
+    "active": true,
+    "pass": false,
+    "outputs": 0,
+    "x": 380,
+    "y": 1000,
+    "wires": []
+  },
+  {
+    "id": "b799047546ede846",
+    "type": "ui_group",
+    "name": "Default",
+    "tab": "93e6636adc9b4dc4",
+    "order": 1,
+    "disp": true,
+    "width": "6",
+    "collapse": false,
+    "className": ""
+  },
+  {
+    "id": "53cae16ea926c3b3",
+    "type": "mqtt-broker",
+    "name": "MQTT BROKER",
+    "broker": "<<MQTT_Broker>>",
+    "port": "1883",
+    "clientid": "",
+    "autoConnect": true,
+    "usetls": false,
+    "protocolVersion": "4",
+    "keepalive": "60",
+    "cleansession": true,
+    "autoUnsubscribe": true,
+    "birthTopic": "",
+    "birthQos": "0",
+    "birthRetain": "false",
+    "birthPayload": "",
+    "birthMsg": {},
+    "closeTopic": "",
+    "closeQos": "0",
+    "closeRetain": "false",
+    "closePayload": "",
+    "closeMsg": {},
+    "willTopic": "",
+    "willQos": "0",
+    "willRetain": "false",
+    "willPayload": "",
+    "willMsg": {},
+    "userProps": "",
+    "sessionExpiry": ""
+  },
+  {
+    "id": "93e6636adc9b4dc4",
+    "type": "ui_tab",
+    "name": "Home",
+    "icon": "dashboard",
+    "disabled": false,
+    "hidden": false
+  }
+]

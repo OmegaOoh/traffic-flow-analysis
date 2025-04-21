@@ -1,0 +1,519 @@
+[
+    {
+        "id": "ca4a1b2cc12808af",
+        "type": "tab",
+        "label": "Project process",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "2f255e7667d2adc3",
+        "type": "junction",
+        "z": "ca4a1b2cc12808af",
+        "x": 740,
+        "y": 100,
+        "wires": [
+            [
+                "2d47baf2299e694b"
+            ]
+        ]
+    },
+    {
+        "id": "e8e2138b8adbba42",
+        "type": "mqtt in",
+        "z": "ca4a1b2cc12808af",
+        "name": "",
+        "topic": "<<MQTT_Topic>>",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "93dea84e3b288f0f",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 380,
+        "wires": [
+            [
+                "7b7b00c51199d917",
+                "fc57a5e97e3a48b3"
+            ]
+        ]
+    },
+    {
+        "id": "ade9132948e35dbd",
+        "type": "function",
+        "z": "ca4a1b2cc12808af",
+        "name": "process",
+        "func": "const predictions = msg.payload.predictions\nlet car = 0;\nlet bike = 0;\nlet heavy = 0;\npredictions.forEach(function(e) {\n    if (e.confidence <= 0.49) return;\n\n    if (e.class === \"car\") {\n        if (e.width >= 50 && e.height >= 30) {\n            car++;\n        } else {\n            bike++\n        }\n    }\n    else if (e.class === \"motorcycle\") {bike++;}\n    else if (e.class === \"bus\") {heavy++;}\n    else if (e.class === \"truck\") {\n        if (e.width >= 200 && e.height >= 65 ) {heavy++;}\n        else car++;\n    }\n});\nlet result = new Object();\nresult.motorcycles = bike;\nresult.cars = car;\nresult.heavyVehicles = heavy;\n\nmsg.payload = JSON.stringify(result);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 300,
+        "wires": [
+            [
+                "471ff49ac0df951e"
+            ]
+        ]
+    },
+    {
+        "id": "65cfca9b34aee237",
+        "type": "template",
+        "z": "ca4a1b2cc12808af",
+        "name": "",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "INSERT INTO vehicleCounts\n(motorcycles, cars, heavyVehicles)\nVALUES\n({{payload.motorcycles}}, {{payload.cars}}, {{payload.heavyVehicles}});",
+        "output": "str",
+        "x": 1220,
+        "y": 360,
+        "wires": [
+            [
+                "a37c585596bb88c6",
+                "8f0a3cc2cc1f3893"
+            ]
+        ]
+    },
+    {
+        "id": "e70d4d1f4c6f7776",
+        "type": "http request",
+        "z": "ca4a1b2cc12808af",
+        "name": "TomTom API call",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.tomtom.com/traffic/services/4/flowSegmentData/relative0/10/json?point=13.845762%2C100.564736&unit=KMPH&openLr=false&key=<<TOMTOM_API_KEY>>",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "Content-Type",
+                "valueType": "other",
+                "valueValue": "*/*"
+            }
+        ],
+        "x": 680,
+        "y": 580,
+        "wires": [
+            [
+                "69cce632b2a53b95"
+            ]
+        ]
+    },
+    {
+        "id": "cbc9082f72ba0d31",
+        "type": "http request",
+        "z": "ca4a1b2cc12808af",
+        "name": "Weather API call",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.openweathermap.org/data/2.5/weather?lat=13.85&lon=100.56&appid=<<OPEN_WEATHER_API_KEY>>",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "Content-Type",
+                "valueType": "other",
+                "valueValue": "*/*"
+            }
+        ],
+        "x": 680,
+        "y": 500,
+        "wires": [
+            [
+                "39a63e8531479d5c"
+            ]
+        ]
+    },
+    {
+        "id": "39a63e8531479d5c",
+        "type": "json",
+        "z": "ca4a1b2cc12808af",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": true,
+        "x": 870,
+        "y": 500,
+        "wires": [
+            [
+                "497d1f8ab55c8b57"
+            ]
+        ]
+    },
+    {
+        "id": "69cce632b2a53b95",
+        "type": "json",
+        "z": "ca4a1b2cc12808af",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": true,
+        "x": 870,
+        "y": 580,
+        "wires": [
+            [
+                "0497ced0d20dc684"
+            ]
+        ]
+    },
+    {
+        "id": "8f0a3cc2cc1f3893",
+        "type": "mysql",
+        "z": "ca4a1b2cc12808af",
+        "mydb": "3a2959ee0c2fdd29",
+        "name": "",
+        "x": 1460,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0497ced0d20dc684",
+        "type": "template",
+        "z": "ca4a1b2cc12808af",
+        "name": "",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "sql",
+        "syntax": "mustache",
+        "template": "INSERT INTO trafficflow\n(currentSpeed, freeFlowSpeed)\nVALUES\n({{payload.flowSegmentData.currentSpeed}},{{payload.flowSegmentData.freeFlowSpeed}});",
+        "output": "str",
+        "x": 1020,
+        "y": 580,
+        "wires": [
+            [
+                "27bc1381cd105ac1",
+                "8f0a3cc2cc1f3893"
+            ]
+        ]
+    },
+    {
+        "id": "27bc1381cd105ac1",
+        "type": "debug",
+        "z": "ca4a1b2cc12808af",
+        "name": "SQL TomTom",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1060,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "9be58278f4ab8951",
+        "type": "debug",
+        "z": "ca4a1b2cc12808af",
+        "name": "SQL Weather",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "a37c585596bb88c6",
+        "type": "debug",
+        "z": "ca4a1b2cc12808af",
+        "name": "SQL Vehicles",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1440,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "471ff49ac0df951e",
+        "type": "json",
+        "z": "ca4a1b2cc12808af",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 1110,
+        "y": 300,
+        "wires": [
+            [
+                "65cfca9b34aee237"
+            ]
+        ]
+    },
+    {
+        "id": "497d1f8ab55c8b57",
+        "type": "function",
+        "z": "ca4a1b2cc12808af",
+        "name": "function 1",
+        "func": "var temp = msg.payload.main.temp;\nvar weather = msg.payload.weather[0] ? msg.payload.weather[0].main : 'Unknown'; // Default to 'Unknown' if not present\nvar weatherDesc = msg.payload.weather[0] ? msg.payload.weather[0].description : 'No description'; // Default to 'No description' if not present\nvar windSpeed = msg.payload.wind.speed;\nvar windHeading = msg.payload.wind.deg;\nvar rainmmh = msg.payload.rain && msg.payload.rain['1h'] ? msg.payload.rain['1h'] : 0; // Default to 0 if not present\nvar humidity = msg.payload.main.humidity;\n\n// Construct the SQL query\nmsg.topic = `INSERT INTO weatherData (temp, weather, weatherDesc, windSpeed, windHeading, rainmmh, humidity) VALUES (${temp}, '${weather}', '${weatherDesc}', ${windSpeed}, ${windHeading}, ${rainmmh}, ${humidity});`;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 500,
+        "wires": [
+            [
+                "9be58278f4ab8951",
+                "8f0a3cc2cc1f3893"
+            ]
+        ]
+    },
+    {
+        "id": "ff37995ccf9c6107",
+        "type": "http request",
+        "z": "ca4a1b2cc12808af",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://detect.roboflow.com/coco/34?api_key=<<ROBOFLOW_API_KEY>>",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "Content-Type",
+                "valueType": "other",
+                "valueValue": "application/json"
+            }
+        ],
+        "x": 810,
+        "y": 300,
+        "wires": [
+            [
+                "ade9132948e35dbd",
+                "d27af94a80710738"
+            ]
+        ]
+    },
+    {
+        "id": "7b7b00c51199d917",
+        "type": "json",
+        "z": "ca4a1b2cc12808af",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": true,
+        "x": 350,
+        "y": 380,
+        "wires": [
+            [
+                "b4968f24dfb37315",
+                "a5c3ec4e5082fba0"
+            ]
+        ]
+    },
+    {
+        "id": "b2f3885928dd9d40",
+        "type": "mysql",
+        "z": "ca4a1b2cc12808af",
+        "d": true,
+        "mydb": "3a2959ee0c2fdd29",
+        "name": "",
+        "x": 760,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a5c3ec4e5082fba0",
+        "type": "template",
+        "z": "ca4a1b2cc12808af",
+        "d": true,
+        "name": "",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "INSERT INTO images\n(image) VALUES (\"{{payload.image}}\")",
+        "output": "str",
+        "x": 540,
+        "y": 380,
+        "wires": [
+            [
+                "b2f3885928dd9d40"
+            ]
+        ]
+    },
+    {
+        "id": "d27af94a80710738",
+        "type": "debug",
+        "z": "ca4a1b2cc12808af",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "b4968f24dfb37315",
+        "type": "function",
+        "z": "ca4a1b2cc12808af",
+        "name": "extract image",
+        "func": "msg.payload = msg.payload.image\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 300,
+        "wires": [
+            [
+                "ff37995ccf9c6107",
+                "2f255e7667d2adc3"
+            ]
+        ]
+    },
+    {
+        "id": "fc57a5e97e3a48b3",
+        "type": "change",
+        "z": "ca4a1b2cc12808af",
+        "name": "clear data",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 380,
+        "y": 540,
+        "wires": [
+            [
+                "cbc9082f72ba0d31",
+                "e70d4d1f4c6f7776"
+            ]
+        ]
+    },
+    {
+        "id": "2d47baf2299e694b",
+        "type": "image",
+        "z": "ca4a1b2cc12808af",
+        "name": "",
+        "width": "400",
+        "data": "payload",
+        "dataType": "msg",
+        "thumbnail": false,
+        "active": true,
+        "pass": false,
+        "outputs": 0,
+        "x": 1620,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "2de2d8fc7c2fefce",
+        "type": "comment",
+        "z": "ca4a1b2cc12808af",
+        "name": "Store image directly into database",
+        "info": "",
+        "x": 640,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "93dea84e3b288f0f",
+        "type": "mqtt-broker",
+        "name": "MQTT Broker",
+        "broker": "<<MQTT_Broker>>",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "3a2959ee0c2fdd29",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "<<DBHOST>>",
+        "port": "3306",
+        "db": "<<DBName>>",
+        "tz": "+07:00",
+        "charset": "UTF8"
+    }
+]
