@@ -1,6 +1,6 @@
 [package]
-name = "tester"
-version = "0.1.0"
+name = "traffic-flow-analysis-tester"
+version = "1.0.0-rc1"
 edition = "2024"
 
 [dependencies]
