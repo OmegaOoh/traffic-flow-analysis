@@ -16,6 +16,8 @@ Setup guides for `tch-rs`: [https://rustrepo.com/repo/LaurentMazare-tch-rs-rust-
     * C++/JAVA [https://rustrepo.com/repo/LaurentMazare-tch-rs-rust-machine-learning](https://rustrepo.com/repo/LaurentMazare-tch-rs-rust-machine-learning)
     * Pytorch(Python) [https://necrashter.github.io/tch-rs-install-from-pytorch](https://necrashter.github.io/tch-rs-install-from-pytorch).
 
+* MacOS have error on dynamic linking, to fix this you should add environment variable `DYLD_LIBRARY_PATH` which point to the directory of `pytorch` lib (The same as in `LD_LIBRARY_PATH`).
+
 ## Database Schema
 
 The project requires a MySQL database with the following tables and columns:
