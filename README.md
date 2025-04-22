@@ -41,3 +41,5 @@ Prediction Model may not be accurate due to limited data and complexity of traff
 Model can be trained using Pytorch and replace in `/backend/src/pytorch_models/`
 
 Note: Jupyter Notebook used to trained the model use on git will be provided in the repository.
+
+To trained your own model unzip `notebook.zip` and follow `model_construction.ipynb` inside compressed file.
