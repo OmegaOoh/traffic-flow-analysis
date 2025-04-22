@@ -28,7 +28,7 @@
       * Use `tch-rs` from Pytorch (Python): [https://necrashter.github.io/tch-rs-install-from-pytorch](https://necrashter.github.io/tch-rs-install-from-pytorch)
     * To install LibTorch/Python follow the installation guide: [https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/)
 
-* MacOS have error on dynamic linking, to fix this you should add environment variable `DYLD_LIBRARY_PATH` which point to the directory of `pytorch` lib (The same as in `LD_LIBRARY_PATH`).
+* MacOS have error on dynamic linking, You can fix this by add path to pytorch lib into environment `DYLD_LIBRARY_PATH`.
 
 3.  **Compile and Run the Server:**
     With the dependencies installed and environment configured, compile and run the backend server using Cargo:
