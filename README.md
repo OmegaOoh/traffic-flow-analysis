@@ -4,6 +4,34 @@
 
 A simple API web application providing data about traffic flow is built with a Rust backend (Rocket) and a Vue.js/Vite frontend.
 
+## Development by
+
+- Sirapob Phasut
+- Pasu Sangiemsin
+
+Software and Knowledge Engineering, Department of Computer Engineering, Faculty of Engineering, Kasetsart University
+
+## Project Overview
+Using images of vehicles on the road to analyze the relation between vehicle count per type, traffic flow, time, day of week, and weather. A pre-trained model was used to count the number of vehicles by type on the road, along with other metrics to predict patterns of road usage by time, day, and weather. This project aims to predict road usage at one part of Ngamwongwan Road, which runs passed Kasetsart University.
+The prediction of the data will be done using Gated Recurrent Units, Recurrent Neural Network model. 
+
+## Main features
+### API to be provided to users
+- Predict Number of vehicles on the road at specific periods and weather condition
+- Predict the Number of each type of vehicles on the road at a specific period and weather condition
+- Traffic flow and vehicle at specific time (Future) base on time and weather condition
+- Descriptive Statistic of data used for model training (Flow, Weather, Vehicle Count)
+
+### Web UI
+- Simple Chart to visualize data
+    - Line Chart for Traffic Flow and Vehicle Counts over the time
+    - Pie Chart show number of datapoint on each weather condition
+- Form to try with Prediction API
+
+### Github repository
+- [Github](https://github.com/OmegaOoh/traffic-flow-analysis)
+- [Documentation](https://github.com/OmegaOoh/traffic-flow-analysis/wiki)
+
 ## Prerequisites
 
 Ensure you have the following installed:
