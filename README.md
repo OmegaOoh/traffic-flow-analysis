@@ -6,8 +6,8 @@ A simple API web application providing data about traffic flow is built with a R
 
 ## Development by
 
-- Sirapob Phasut
-- Pasu Sangiemsin
+- [Sirapob Phasut](https://github.com/OmegaOoh)
+- [Pasu Sangiemsin](https://github.com/opxz7148)
 
 Software and Knowledge Engineering, Department of Computer Engineering, Faculty of Engineering, Kasetsart University
 
