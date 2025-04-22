@@ -14,6 +14,6 @@ impl<'r> OpenApiFromRequest<'r> for &'r Logs {
         _required: bool,
     ) -> Result<RequestHeaderInput, OpenApiError> {
         // Database connections are not parameters
-        Err(OpenApiError::new("Database connections are not supported as parameters".to_string()))
+        Ok(RequestHeaderInput::None)
     }
 }

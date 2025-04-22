@@ -4,14 +4,14 @@
     <!-- Selection Choice -->
     <div class="w-2/6 m-auto">
       <h3 class="text-lg font-bold text-left my-4">Pick time to predict</h3>
-      <select class="select select-lg w-full" v-model="selectedTime">
+      <select class="select select-lg w-full" v-model="selectedTime" id="time-selection">
         <option selected="true" value="">Now</option>
         <option v-for="time in timeOptions" :key="time">
           {{ time }}
         </option>
       </select>
       <h3 required class="text-lg font-bold text-left my-2">Pick Weather Condition</h3>
-      <select class="select select-lg w-full" v-model="selectedWeatherCondition">
+      <select class="select select-lg w-full" v-model="selectedWeatherCondition" id="weather-selection">
         <option selected>Clear</option>
         <option>Cloudy</option>
         <option>Low Visibility</option>
@@ -19,7 +19,7 @@
       </select>
       <div v-if="props.useVehicleType">
       <h3 class="text-lg font-bold text-left my-2">Pick vehicle type to predict</h3>
-        <select class="select select-lg w-full" v-model="selectedVehicleType">
+        <select class="select select-lg w-full" v-model="selectedVehicleType" id="vehicle-selection">
           <option selected value="">All</option>
           <option>Car</option>
           <option>Motorcycle</option>
@@ -31,24 +31,24 @@
     <!-- ResultCard -->
     <div
       :class="
-        'w-1/2 h-full min-h-[fit-content] rounded-lg p-4 mx-10 shadow-lg shadow-black text-primary transition-transform duration-100 hover:scale-110 ' +
+        'w-1/2 h-full min-h-[fit-content] rounded-lg p-4 mx-10 shadow-lg shadow-black text-primary ' +
         bgClass
       "
     >
       <div>
         <p class="text-lg font-bold text-neutral-50">Time</p>
-        <p class="text-bold text-4xl text-center text-neutral-50">{{ get_time() }}</p>
+        <p class="text-bold text-4xl text-center text-neutral-50" id="time-card">{{ get_time() }}</p>
       </div>
       <div>
         <p class="text-lg font-bold text-neutral-50">Weather Condition</p>
-        <p class="text-semibold text-xl text-center text-neutral-50">
+        <p class="text-semibold text-xl text-center text-neutral-50" id="weather-card">
           <component :is="get_weather_icon()" size="64" class="mx-auto" />
           {{ selectedWeatherCondition }} 
         </p>
       </div>
       <div v-if="props.useVehicleType">
         <p class="text-lg font-bold text-neutral-50">Vehicle Type</p>
-        <div class="flex flex-row justify-center text-neutral-50">
+        <div class="flex flex-row justify-center text-neutral-50" id="vehicle-card">
           <component v-for="component in get_vehicle_icon()" :is="component" v-bind:key="component" size="64" class="mx-8"/>
         </div>
       </div>
@@ -154,7 +154,7 @@ async function predictionHandler () {
     (selectedVehicleType.value != "" ? "/" + selectedVehicleType.value.toLowerCase() : ""), {
       time: timeToRFC3339(selectedTime.value),
       weather_cond: selectedWeatherCondition.value
-    }
+  }
   ).then(response => {
     responseValue.value = response.data[props.apiReturn].toFixed(2);
     isWaiting.value = false;

@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import {ref} from 'vue';
 import WeatherPie from "@/components/WeatherPieChart.vue"
 import TrafficLine from "@/components/TrafficFlowSpeedChart.vue"
 import VehicleLine from "@/components/VehicleCountChart.vue"
+import PredictionChart from "@/components/PredictionCharts.vue"
+
+const dayOfWeek = ref(999);
 </script>
 
 <template>
@@ -9,6 +13,9 @@ import VehicleLine from "@/components/VehicleCountChart.vue"
     <div class="flex flex-col items-center justify-center h-full">
       <h1 class="text-4xl font-bold mb-4">Welcome to Traffic Flow Analysis</h1>
       <p class="text-center">Explore the traffic flow data</p>
+    </div>
+    <div>
+      <PredictionChart/>
     </div>
     <div class="md:grid md:grid-cols-2 gap-4">
       <div class="m-auto">
@@ -26,14 +33,24 @@ import VehicleLine from "@/components/VehicleCountChart.vue"
         </div>
       </div>
     </div>
+    <select class="select select-lg mx-8" v-model="dayOfWeek">
+      <option value="999">All</option>
+      <option value="1">Sunday</option>
+      <option value="2">Monday</option>
+      <option value="3">Tuesday</option>
+      <option value="4">Wednesday</option>
+      <option value="5">Thursday</option>
+      <option value="6">Friday</option>
+      <option value="7">Saturday</option>
+    </select>
     <div class="card bg-neutral m-8 h-[75vh]"> 
       <div class="card-body size-full">
-        <TrafficLine />
+        <TrafficLine :day_of_week="dayOfWeek"/>
       </div>
     </div>
     <div class="card bg-neutral m-8 h-[75vh]"> 
       <div class="card-body size-full">
-        <VehicleLine />
+        <VehicleLine :day_of_week="dayOfWeek" />
       </div>
     </div>
   </main>

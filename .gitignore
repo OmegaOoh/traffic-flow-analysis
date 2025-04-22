@@ -13,3 +13,5 @@ target/
 .env
 
 node_modules/
+
+notebook/
