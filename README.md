@@ -12,7 +12,9 @@ Ensure you have the following installed:
 * **Node.js and a JavaScript Package Manager:** For the frontend (npm, Yarn, or Bun). [https://nodejs.org/](https://nodejs.org/)
 * **MySQL Database:** The backend requires a MySQL instance.
 * **LibTorch:** For the prediction model used by the backend. Installation guide: [https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/). 
-Setup guides for `tch-rs`: [https://rustrepo.com/repo/LaurentMazare-tch-rs-rust-machine-learning](https://rustrepo.com/repo/LaurentMazare-tch-rs-rust-machine-learning) or [https://necrashter.github.io/tch-rs-install-from-pytorch](https://necrashter.github.io/tch-rs-install-from-pytorch).
+Setup guides for `tch-rs`: [https://rustrepo.com/repo/LaurentMazare-tch-rs-rust-machine-learning]
+    * C++/JAVA [https://rustrepo.com/repo/LaurentMazare-tch-rs-rust-machine-learning](https://rustrepo.com/repo/LaurentMazare-tch-rs-rust-machine-learning)
+    * Pytorch(Python) [https://necrashter.github.io/tch-rs-install-from-pytorch](https://necrashter.github.io/tch-rs-install-from-pytorch).
 
 ## Database Schema
 
